@@ -59,6 +59,11 @@ struct actionf_t {
     std::get<decltype(p)>(data) = p;
   }
 
+  explicit constexpr actionf_t(int p)
+  {
+    std::get<int>(data) = p;
+  }
+
   template <typename Ret, typename... Param>
   constexpr actionf_t &operator=(Ret (*p)(Param...)) {
     data = actionf_t{p}.data;
