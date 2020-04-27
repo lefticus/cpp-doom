@@ -204,11 +204,8 @@ typedef enum
 
 
 // Map Object definition.
-struct mobj_t
+struct mobj_t : public thinker_t
 {
-    // List: thinker links.
-    thinker_t		thinker;
-
     // Info for drawing: position.
     fixed_t		x;
     fixed_t		y;

@@ -39,35 +39,38 @@ struct pspdef_t;
 struct thinker_t;
 
 typedef void (*actionf_t1)(thinker_t *mo);
-typedef void (*actionf_p1)(mobj_t *mo);
+typedef void (*actionf_m1)(mobj_t *mo);
 typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 
 struct actionf_t {
   constexpr actionf_t() = default;
 
+  constexpr actionf_t(actionf_m1 p)
+  {
+    std::get<actionf_m1>(data) = p;
+  }
+
   constexpr actionf_t(actionf_t1 p)
   {
     std::get<actionf_t1>(data) = p;
   }
-  constexpr actionf_t(actionf_p1 p)
-  {
-    std::get<actionf_p1>(data) = p;
-  }
+
   constexpr actionf_t(actionf_p3 p)
   {
     std::get<actionf_p3>(data) = p;
   }
+
   constexpr actionf_t(int        p)
   {
     std::get<int>(data) = p;
   }
 
-  constexpr actionf_t &operator=(actionf_t1 p) {
+  constexpr actionf_t &operator=(actionf_m1 p) {
     data = actionf_t{p}.data;
     return *this;
   }
 
-  constexpr actionf_t &operator=(actionf_p1 p) {
+  constexpr actionf_t &operator=(actionf_t1 p) {
     data = actionf_t{p}.data;
     return *this;
   }
@@ -103,15 +106,24 @@ struct actionf_t {
   }
 
    bool call_if( thinker_t *thinker ){
-      return call_iff<thinker_t *>( (thinker_t*)thinker ) ||
-         call_iff<mobj_t *>( (mobj_t *)thinker ) ||
-         call_iff<mobj_t *, player_t *, pspdef_t *>( (mobj_t *)thinker, (player_t*)nullptr, (pspdef_t*)nullptr );
+      return call_iff( thinker ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker),
+                   (player_t*)nullptr,
+                   (pspdef_t*)nullptr );
    }
 
-   bool call_if( mobj_t *thinker, player_t *player, pspdef_t *psp ){
-       return call_iff<thinker_t *>( (thinker_t*)thinker ) ||
-          call_iff<mobj_t *>( thinker ) ||
-          call_iff<mobj_t *, player_t *, pspdef_t *>( thinker, (player_t*)player, (pspdef_t*)psp );
+   bool call_if( mobj_t *thinker ){
+      return call_iff( thinker ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker),
+                   (player_t*)nullptr,
+                   (pspdef_t*)nullptr );
+   }
+
+   bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
+      return call_iff( mo ) ||
+         call_iff( mo, player, psp );
    }
 
   constexpr explicit operator bool() const {
@@ -123,7 +135,7 @@ struct actionf_t {
 private:
    std::tuple<int, const void *,
               actionf_t1,
-              actionf_p1,
+              actionf_m1,
               actionf_p3>
       data{};
 };

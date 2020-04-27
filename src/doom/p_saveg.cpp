@@ -302,7 +302,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     int pl;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // fixed_t x;
     str->x = saveg_read32();
@@ -467,7 +467,7 @@ thinker_t* P_IndexToThinker (uint32_t index)
 static void saveg_write_mobj_t(mobj_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // fixed_t x;
     saveg_write32(str->x);
@@ -1732,8 +1732,8 @@ void P_UnArchiveThinkers (void)
 	    // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded
 //	    mobj->floorz = mobj->subsector->sector->floorheight;
 //	    mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-	    mobj->thinker.function = P_MobjThinker;
-	    P_AddThinker (&mobj->thinker);
+	    mobj->function = P_MobjThinker;
+	    P_AddThinker (mobj);
 	    break;
 
 	  default:

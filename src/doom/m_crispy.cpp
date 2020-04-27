@@ -192,7 +192,7 @@ void M_CrispyToggleColoredblood(int choice)
     // [crispy] switch NOBLOOD flag for Lost Souls
     for (th = thinkercap.next; th && th != &thinkercap; th = th->next)
     {
-	if (th->function == P_MobjThinker)
+       if (th->function == P_MobjThinker)
 	{
 		mobj_t *mobj = (mobj_t *)th;
 
