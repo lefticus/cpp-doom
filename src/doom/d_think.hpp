@@ -54,7 +54,7 @@ struct actionf_t {
   constexpr actionf_t() = default;
 
   template<typename ... Param>
-  explicit constexpr actionf_t(void (*p)(Param...))
+  constexpr actionf_t(void (*p)(Param...))
   {
     std::get<decltype(p)>(data) = p;
   }
