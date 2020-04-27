@@ -564,7 +564,7 @@ void P_MobjThinker (mobj_t* mobj)
     {
 	P_XYMovement (mobj);
 
-	if (mobj->thinker.function == actionf_t{})
+	if (mobj->thinker.function == actionf_t{-1})
 	    return;		// mobj was removed
     }
     if ( (mobj->z != mobj->floorz)
@@ -572,7 +572,7 @@ void P_MobjThinker (mobj_t* mobj)
     {
 	P_ZMovement (mobj);
 	
-	if (mobj->thinker.function == actionf_t{})
+	if (mobj->thinker.function == actionf_t{-1})
 	    return;		// mobj was removed
     }
 
