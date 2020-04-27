@@ -302,7 +302,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     int pl;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // fixed_t x;
     str->x = saveg_read32();
@@ -467,7 +467,7 @@ thinker_t* P_IndexToThinker (uint32_t index)
 static void saveg_write_mobj_t(mobj_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // fixed_t x;
     saveg_write32(str->x);
@@ -969,7 +969,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // ceiling_e type;
     str->type = static_cast<ceiling_e>(saveg_read_enum());
@@ -1003,7 +1003,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
 static void saveg_write_ceiling_t(ceiling_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // ceiling_e type;
     saveg_write_enum(str->type);
@@ -1042,7 +1042,7 @@ static void saveg_read_vldoor_t(vldoor_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // vldoor_e type;
     str->type = static_cast<vldoor_e>(saveg_read_enum());
@@ -1070,7 +1070,7 @@ static void saveg_read_vldoor_t(vldoor_t *str)
 static void saveg_write_vldoor_t(vldoor_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // vldoor_e type;
     saveg_write_enum(str->type);
@@ -1103,7 +1103,7 @@ static void saveg_read_floormove_t(floormove_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // floor_e type;
     str->type = static_cast<floor_e>(saveg_read_enum());
@@ -1134,7 +1134,7 @@ static void saveg_read_floormove_t(floormove_t *str)
 static void saveg_write_floormove_t(floormove_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // floor_e type;
     saveg_write_enum(str->type);
@@ -1170,7 +1170,7 @@ static void saveg_read_plat_t(plat_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1210,7 +1210,7 @@ static void saveg_read_plat_t(plat_t *str)
 static void saveg_write_plat_t(plat_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // sector_t* sector;
     saveg_write32(str->sector - sectors);
@@ -1255,7 +1255,7 @@ static void saveg_read_lightflash_t(lightflash_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1280,7 +1280,7 @@ static void saveg_read_lightflash_t(lightflash_t *str)
 static void saveg_write_lightflash_t(lightflash_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // sector_t* sector;
     saveg_write32(str->sector - sectors);
@@ -1310,7 +1310,7 @@ static void saveg_read_strobe_t(strobe_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1335,7 +1335,7 @@ static void saveg_read_strobe_t(strobe_t *str)
 static void saveg_write_strobe_t(strobe_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // sector_t* sector;
     saveg_write32(str->sector - sectors);
@@ -1365,7 +1365,7 @@ static void saveg_read_glow_t(glow_t *str)
     int sector;
 
     // thinker_t thinker;
-    saveg_read_thinker_t(&str->thinker);
+    saveg_read_thinker_t(str);
 
     // sector_t* sector;
     sector = saveg_read32();
@@ -1384,7 +1384,7 @@ static void saveg_read_glow_t(glow_t *str)
 static void saveg_write_glow_t(glow_t *str)
 {
     // thinker_t thinker;
-    saveg_write_thinker_t(&str->thinker);
+    saveg_write_thinker_t(str);
 
     // sector_t* sector;
     saveg_write32(str->sector - sectors);
@@ -1732,8 +1732,8 @@ void P_UnArchiveThinkers (void)
 	    // [crispy] killough 2/28/98: Fix for falling down into a wall after savegame loaded
 //	    mobj->floorz = mobj->subsector->sector->floorheight;
 //	    mobj->ceilingz = mobj->subsector->sector->ceilingheight;
-	    mobj->thinker.function = P_MobjThinker;
-	    P_AddThinker (&mobj->thinker);
+	    mobj->function = P_MobjThinker;
+	    P_AddThinker (mobj);
 	    break;
 
 	  default:
@@ -1925,10 +1925,10 @@ void P_UnArchiveSpecials (void)
             saveg_read_ceiling_t(ceiling);
 	    ceiling->sector->specialdata = ceiling;
 
-	    if (ceiling->thinker.function)
-		ceiling->thinker.function = T_MoveCeiling;
+	    if (ceiling->function)
+		ceiling->function = T_MoveCeiling;
 
-	    P_AddThinker (&ceiling->thinker);
+	    P_AddThinker (ceiling);
 	    P_AddActiveCeiling(ceiling);
 	    break;
 				
@@ -1937,8 +1937,8 @@ void P_UnArchiveSpecials (void)
 	    door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVEL, NULL);
             saveg_read_vldoor_t(door);
 	    door->sector->specialdata = door;
-	    door->thinker.function = T_VerticalDoor;
-	    P_AddThinker (&door->thinker);
+	    door->function = T_VerticalDoor;
+	    P_AddThinker (door);
 	    break;
 				
 	  case tc_floor:
@@ -1946,8 +1946,8 @@ void P_UnArchiveSpecials (void)
 	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVEL, NULL);
             saveg_read_floormove_t(floor);
 	    floor->sector->specialdata = floor;
-	    floor->thinker.function = T_MoveFloor;
-	    P_AddThinker (&floor->thinker);
+	    floor->function = T_MoveFloor;
+	    P_AddThinker (floor);
 	    break;
 				
 	  case tc_plat:
@@ -1956,10 +1956,10 @@ void P_UnArchiveSpecials (void)
             saveg_read_plat_t(plat);
 	    plat->sector->specialdata = plat;
 
-	    if (plat->thinker.function)
-		plat->thinker.function = T_PlatRaise;
+	    if (plat->function)
+		plat->function = T_PlatRaise;
 
-	    P_AddThinker (&plat->thinker);
+	    P_AddThinker (plat);
 	    P_AddActivePlat(plat);
 	    break;
 				
@@ -1967,24 +1967,24 @@ void P_UnArchiveSpecials (void)
 	    saveg_read_pad();
 	    flash = zmalloc<decltype(flash)> (sizeof(*flash), PU_LEVEL, NULL);
             saveg_read_lightflash_t(flash);
-	    flash->thinker.function = T_LightFlash;
-	    P_AddThinker (&flash->thinker);
+	    flash->function = T_LightFlash;
+	    P_AddThinker (flash);
 	    break;
 				
 	  case tc_strobe:
 	    saveg_read_pad();
 	    strobe = zmalloc<decltype(strobe)> (sizeof(*strobe), PU_LEVEL, NULL);
             saveg_read_strobe_t(strobe);
-	    strobe->thinker.function = T_StrobeFlash;
-	    P_AddThinker (&strobe->thinker);
+	    strobe->function = T_StrobeFlash;
+	    P_AddThinker (strobe);
 	    break;
 				
 	  case tc_glow:
 	    saveg_read_pad();
 	    glow = zmalloc<decltype(glow)> (sizeof(*glow), PU_LEVEL, NULL);
             saveg_read_glow_t(glow);
-	    glow->thinker.function = T_Glow;
-	    P_AddThinker (&glow->thinker);
+	    glow->function = T_Glow;
+	    P_AddThinker (glow);
 	    break;
 				
 	  default:

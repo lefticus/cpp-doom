@@ -125,55 +125,34 @@ int EV_DoDonut(line_t* line);
 //
 // P_LIGHTS
 //
-struct fireflicker_t
-{
-    thinker_t	thinker;
+struct light_t : public thinker_t {
     sector_t*	sector;
-    int		count;
-    int		maxlight;
     int		minlight;
-    
+    int		maxlight;
 };
 
-
-
-struct lightflash_t
+struct fireflicker_t : public light_t
 {
-    thinker_t	thinker;
-    sector_t*	sector;
     int		count;
-    int		maxlight;
-    int		minlight;
+};
+
+struct lightflash_t : public light_t
+{
+    int		count;
     int		maxtime;
     int		mintime;
-    
 };
 
-
-
-struct strobe_t
+struct strobe_t : public light_t
 {
-    thinker_t	thinker;
-    sector_t*	sector;
     int		count;
-    int		minlight;
-    int		maxlight;
     int		darktime;
     int		brighttime;
-    
 };
 
-
-
-
-struct glow_t
+struct glow_t : public light_t
 {
-    thinker_t	thinker;
-    sector_t*	sector;
-    int		minlight;
-    int		maxlight;
     int		direction;
-
 };
 
 
@@ -183,9 +162,9 @@ struct glow_t
 #define SLOWDARK			35
 
 void    P_SpawnFireFlicker (sector_t* sector);
-void    T_LightFlash (lightflash_t* flash);
+void    T_LightFlash (thinker_t* thinker);
 void    P_SpawnLightFlash (sector_t* sector);
-void    T_StrobeFlash (strobe_t* flash);
+void    T_StrobeFlash (thinker_t* thinker);
 
 void
 P_SpawnStrobeFlash
@@ -201,7 +180,7 @@ EV_LightTurnOn
 ( line_t*	line,
   int		bright );
 
-void    T_Glow(glow_t* g);
+void    T_Glow(thinker_t* thinker);
 void    P_SpawnGlowingLight(sector_t* sector);
 
 
@@ -288,9 +267,8 @@ enum plattype_e
 
 
 
-struct plat_t
+struct plat_t : public thinker_t
 {
-    thinker_t	thinker;
     sector_t*	sector;
     fixed_t	speed;
     fixed_t	low;
@@ -314,7 +292,7 @@ struct plat_t
 
 extern plat_t*	activeplats[MAXPLATS];
 
-void    T_PlatRaise(plat_t*	plat);
+void    T_PlatRaise(thinker_t* thinker);
 
 int
 EV_DoPlat
@@ -346,9 +324,8 @@ enum vldoor_e
 
 
 
-struct vldoor_t
+struct vldoor_t : public thinker_t
 {
-    thinker_t	thinker;
     vldoor_e	type;
     sector_t*	sector;
     fixed_t	topheight;
@@ -386,7 +363,7 @@ EV_DoLockedDoor
   vldoor_e	type,
   mobj_t*	thing );
 
-void    T_VerticalDoor (vldoor_t* door);
+void    T_VerticalDoor (thinker_t* thinker);
 void    P_SpawnDoorCloseIn30 (sector_t* sec);
 
 void
@@ -496,9 +473,8 @@ typedef enum
 
 
 
-struct ceiling_t
+struct ceiling_t : public thinker_t
 {
-    thinker_t	thinker;
     ceiling_e	type;
     sector_t*	sector;
     fixed_t	bottomheight;
@@ -530,7 +506,7 @@ EV_DoCeiling
 ( line_t*	line,
   ceiling_e	type );
 
-void    T_MoveCeiling (ceiling_t* ceiling);
+void    T_MoveCeiling (thinker_t* ceiling);
 void    P_AddActiveCeiling(ceiling_t* c);
 void    P_RemoveActiveCeiling(ceiling_t* c);
 int	EV_CeilingCrushStop(line_t* line);
@@ -587,9 +563,8 @@ enum stair_e
 
 
 
-struct floormove_t
+struct floormove_t : public thinker_t
 {
-    thinker_t	thinker;
     floor_e	type;
     boolean	crush;
     sector_t*	sector;
@@ -632,7 +607,7 @@ EV_DoFloor
 ( line_t*	line,
   floor_e	floortype );
 
-void T_MoveFloor( floormove_t* floor);
+void T_MoveFloor( thinker_t* thinker);
 
 //
 // P_TELEPT

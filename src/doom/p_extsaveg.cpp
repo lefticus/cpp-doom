@@ -118,7 +118,7 @@ static void P_ReadTotalLevelTimes (const char *key)
 
 // T_FireFlicker()
 
-extern void T_FireFlicker (fireflicker_t* flick);
+extern void T_FireFlicker (thinker_t *thinker);
 
 static void P_WriteFireFlicker (const char *key)
 {
@@ -162,9 +162,9 @@ static void P_ReadFireFlicker (const char *key)
 		flick->maxlight = maxlight;
 		flick->minlight = minlight;
 
-		flick->thinker.function = T_FireFlicker;
+		flick->function = T_FireFlicker;
 
-		P_AddThinker(&flick->thinker);
+		P_AddThinker(flick);
 	}
 }
 

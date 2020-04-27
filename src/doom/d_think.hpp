@@ -36,36 +36,46 @@
 struct mobj_t;
 struct player_t;
 struct pspdef_t;
-struct ceiling_t;
-struct fire_t;
-struct vldoor_t;
-struct fireflicker_t;
-struct plat_t;
-struct lightflash_t;
-struct floormove_t;
-struct strobe_t;
-struct glow_t;
 struct thinker_t;
 
-template<typename... Params>
-using actionf = void(*)( Params... parameters );
+typedef void (*actionf_t1)(thinker_t *mo);
+typedef void (*actionf_m1)(mobj_t *mo);
+typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 
 struct actionf_t {
   constexpr actionf_t() = default;
 
-  template<typename ... Param>
-  explicit constexpr actionf_t(void (*p)(Param...))
+  explicit constexpr actionf_t(actionf_m1 p)
   {
-    std::get<decltype(p)>(data) = p;
+    std::get<actionf_m1>(data) = p;
   }
 
-  explicit constexpr actionf_t(int p)
+  explicit constexpr actionf_t(actionf_t1 p)
+  {
+    std::get<actionf_t1>(data) = p;
+  }
+
+  explicit constexpr actionf_t(actionf_p3 p)
+  {
+    std::get<actionf_p3>(data) = p;
+  }
+
+  constexpr actionf_t(int        p)
   {
     std::get<int>(data) = p;
   }
 
-  template <typename... Param>
-  constexpr actionf_t &operator=(void (*p)(Param...)) {
+  constexpr actionf_t &operator=(actionf_m1 p) {
+    data = actionf_t{p}.data;
+    return *this;
+  }
+
+  constexpr actionf_t &operator=(actionf_t1 p) {
+    data = actionf_t{p}.data;
+    return *this;
+  }
+
+  constexpr actionf_t &operator=(actionf_p3 p) {
     data = actionf_t{p}.data;
     return *this;
   }
@@ -85,52 +95,28 @@ struct actionf_t {
     return std::get<decltype(p)>(data) == p;
   }
 
-  template <typename... Param> constexpr bool call_iff(Param... param) {
-    const auto func = std::get<void (*)(Param...)>(data);
-    if (func) {
-      func(param...);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-   template<typename T>
-   bool call_if( T *thinker ){
-      return call_iff<>() ||
-         call_iff<fire_t *>( (fire_t *)thinker ) ||
-         call_iff<floormove_t *>( (floormove_t *)thinker ) ||
-         call_iff<ceiling_t *>( (ceiling_t *)thinker ) ||
-         call_iff<glow_t *>( (glow_t *)thinker ) ||
-         call_iff<strobe_t *>( (strobe_t *)thinker ) ||
-         call_iff<vldoor_t *>( (vldoor_t *)thinker ) ||
-         call_iff<plat_t *>( (plat_t *)thinker ) ||
-         call_iff<lightflash_t *>( (lightflash_t *)thinker ) ||
-         call_iff<fireflicker_t *>( (fireflicker_t *)thinker ) ||
-         call_iff<thinker_t *>( (thinker_t*)thinker ) ||
-         call_iff<mobj_t *>( (mobj_t *)thinker ) ||
-         call_iff<player_t *, pspdef_t *>( (player_t *)thinker, (pspdef_t*)nullptr ) ||
-         call_iff<mobj_t *, player_t *, pspdef_t *>( (mobj_t *)thinker, (player_t*)nullptr, (pspdef_t*)nullptr );
+   bool call_if( thinker_t *thinker ){
+      return call_iff( thinker ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker),
+                   (player_t*)nullptr,
+                   (pspdef_t*)nullptr );
    }
 
-   bool call_if( mobj_t *thinker, player_t *player, pspdef_t *psp ){
-       return call_iff<>() ||
-          call_iff<fire_t *>( (fire_t *)thinker ) ||
-          call_iff<floormove_t *>( (floormove_t *)thinker ) ||
-          call_iff<ceiling_t *>( (ceiling_t *)thinker ) ||
-          call_iff<glow_t *>( (glow_t *)thinker ) ||
-          call_iff<strobe_t *>( (strobe_t *)thinker ) ||
-          call_iff<vldoor_t *>( (vldoor_t *)thinker ) ||
-          call_iff<plat_t *>( (plat_t *)thinker ) ||
-          call_iff<lightflash_t *>( (lightflash_t *)thinker ) ||
-          call_iff<fireflicker_t *>( (fireflicker_t *)thinker ) ||
-          call_iff<thinker_t *>( (thinker_t*)thinker ) ||
-          call_iff<mobj_t *>( thinker ) ||
-          call_iff<player_t *, pspdef_t *>( (player_t *)thinker, (pspdef_t*)psp ) ||
-          call_iff<mobj_t *, player_t *, pspdef_t *>( thinker, (player_t*)player, (pspdef_t*)psp );
+   bool call_if( mobj_t *thinker ){
+      return call_iff( thinker ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
+         call_iff( reinterpret_cast<mobj_t*>(thinker),
+                   (player_t*)nullptr,
+                   (pspdef_t*)nullptr );
    }
 
-  constexpr explicit operator bool() const {
+   bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
+      return call_iff( mo ) ||
+         call_iff( mo, player, psp );
+   }
+
+   constexpr explicit operator bool() const {
     return *this != actionf_t{};
   }
 
@@ -138,20 +124,9 @@ struct actionf_t {
 
 private:
    std::tuple<int, const void *,
-              actionf<>,
-              actionf<fire_t *>,
-              actionf<floormove_t *>,
-              actionf<ceiling_t *>,
-              actionf<glow_t *>,
-              actionf<strobe_t *>,
-              actionf<vldoor_t *>,
-              actionf<plat_t *>,
-              actionf<lightflash_t *>,
-              actionf<fireflicker_t *>,
-              actionf<thinker_t *>,
-              actionf<mobj_t *>,
-              actionf<player_t *, pspdef_t *>,
-              actionf<mobj_t *, player_t *, pspdef_t *> >
+              actionf_t1,
+              actionf_m1,
+              actionf_p3>
       data{};
 };
 

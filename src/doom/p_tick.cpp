@@ -109,7 +109,7 @@ void P_RunThinkers (void)
 	}
 	else
 	{
-            currentthinker->function.call_if(reinterpret_cast<mobj_t *>(currentthinker));
+            currentthinker->function.call_if(currentthinker);
             nextthinker = currentthinker->next;
 	}
 	currentthinker = nextthinker;
