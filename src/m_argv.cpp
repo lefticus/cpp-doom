@@ -30,7 +30,7 @@
 #include "m_argv.hpp"  // haleyjd 20110212: warning fix
 
 int		myargc;
-char**		myargv;
+const char**		myargv;
 
 
 
@@ -81,7 +81,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
     int size;
     char *infile;
     char *file;
-    char **newargv;
+    const char **newargv;
     int newargc;
     int i, k;
 
@@ -123,7 +123,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
     // Create new arguments list array
 
-    newargv = static_cast<char **>(malloc(sizeof(char *) * MAXARGVS));
+    newargv = static_cast<const char **>(malloc(sizeof(const char *) * MAXARGVS));
     newargc = 0;
     memset(newargv, 0, sizeof(char *) * MAXARGVS);
 

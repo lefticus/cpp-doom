@@ -36,7 +36,7 @@
 
 void D_DoomMain (void);
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
     // save arguments
 

@@ -162,7 +162,7 @@ typedef struct
     
     // hotkey in menu
     char	alphaKey;			
-    char	*alttext; // [crispy] alternative text for the Options menu
+    const char	*alttext; // [crispy] alternative text for the Options menu
 } menuitem_t;
 
 
@@ -1456,21 +1456,21 @@ static void M_DrawCrispnessBackground(void)
 
 static char crispy_menu_text[48];
 
-static void M_DrawCrispnessHeader(char *item)
+static void M_DrawCrispnessHeader(const char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
                "%s%s", crstr[CR_GOLD], item);
     M_WriteText(ORIGWIDTH/2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
-static void M_DrawCrispnessSeparator(int y, char *item)
+static void M_DrawCrispnessSeparator(int y, const char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
                "%s%s", crstr[CR_GOLD], item);
     M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, char *item, int feat, boolean cond)
+static void M_DrawCrispnessItem(int y, const char *item, int feat, boolean cond)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
                "%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1479,7 +1479,7 @@ static void M_DrawCrispnessItem(int y, char *item, int feat, boolean cond)
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, int feat, boolean cond)
+static void M_DrawCrispnessMultiItem(int y, const char *item, multiitem_t *multiitem, int feat, boolean cond)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
                "%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1488,7 +1488,7 @@ static void M_DrawCrispnessMultiItem(int y, char *item, multiitem_t *multiitem, 
     M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, char *item)
+static void M_DrawCrispnessGoto(int y, const char *item)
 {
     M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
                "%s%s", crstr[CR_GOLD], item);
@@ -2999,7 +2999,7 @@ void M_Drawer (void)
 
 	    if (currentMenu == &OptionsDef)
 	    {
-		char *alttext = currentMenu->menuitems[i].alttext;
+		const char *alttext = currentMenu->menuitems[i].alttext;
 
 		if (alttext)
 		    M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);

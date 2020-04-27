@@ -100,7 +100,7 @@ static boolean music_initialized = false;
 
 static boolean sdl_was_initialized = false;
 
-char *music_pack_path = "";
+const char *music_pack_path = "";
 
 // If true, we are playing a substitute digital track rather than in-WAD
 // MIDI/MUS track, and file_metadata contains loop metadata.
@@ -1003,7 +1003,7 @@ static boolean IsMusicLump(int lumpnum)
 // Dump an example config file containing checksums for all MIDI music
 // found in the WAD directory.
 
-static void DumpSubstituteConfig(char *filename)
+static void DumpSubstituteConfig(const char *filename)
 {
     sha1_context_t context;
     sha1_digest_t digest;

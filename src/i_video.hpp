@@ -96,7 +96,7 @@ void I_StartTic (void);
 
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
-extern char *video_driver;
+extern const char *video_driver;
 extern boolean screenvisible;
 
 extern int vanilla_keyboard_mapping;
@@ -112,7 +112,7 @@ extern int integer_scaling;
 extern int vga_porch_flash;
 extern int force_software_renderer;
 
-extern char *window_position;
+extern const char *window_position;
 void I_GetWindowPosition(int *x, int *y, int w, int h);
 
 // Joystic/gamepad hysteresis
