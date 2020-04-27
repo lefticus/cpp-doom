@@ -112,8 +112,7 @@ struct actionf_t {
     }
   }
 
-   template<typename T>
-   bool call_if( T *thinker ){
+   bool call_if( thinker_t *thinker ){
       return call_iff<>() ||
          call_iff<thinker_t *>( (thinker_t*)thinker ) ||
          call_iff<mobj_t *>( (mobj_t *)thinker ) ||
