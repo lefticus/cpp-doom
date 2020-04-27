@@ -92,7 +92,7 @@ struct actionf_t {
     return std::get<decltype(p)>(data) == p;
   }
 
-  template <typename... Param> constexpr bool call_if(Param... param) {
+  template <typename... Param> constexpr bool call_iff(Param... param) {
     const auto func = std::get<void (*)(Param...)>(data);
     if (func) {
       func(param...);
@@ -101,6 +101,41 @@ struct actionf_t {
       return false;
     }
   }
+
+   template<typename T>
+   bool call_if( T *thinker ){
+      return call_iff<>() ||
+         call_iff<fire_t *>( (fire_t *)thinker ) ||
+         call_iff<floormove_t *>( (floormove_t *)thinker ) ||
+         call_iff<ceiling_t *>( (ceiling_t *)thinker ) ||
+         call_iff<glow_t *>( (glow_t *)thinker ) ||
+         call_iff<strobe_t *>( (strobe_t *)thinker ) ||
+         call_iff<vldoor_t *>( (vldoor_t *)thinker ) ||
+         call_iff<plat_t *>( (plat_t *)thinker ) ||
+         call_iff<lightflash_t *>( (lightflash_t *)thinker ) ||
+         call_iff<fireflicker_t *>( (fireflicker_t *)thinker ) ||
+         call_iff<thinker_t *>( (thinker_t*)thinker ) ||
+         call_iff<mobj_t *>( (mobj_t *)thinker ) ||
+         call_iff<player_t *, pspdef_t *>( (player_t *)thinker, (pspdef_t*)nullptr ) ||
+         call_iff<mobj_t *, player_t *, pspdef_t *>( (mobj_t *)thinker, (player_t*)nullptr, (pspdef_t*)nullptr );
+   }
+
+   bool call_if( mobj_t *thinker, player_t *player, pspdef_t *psp ){
+       return call_iff<>() ||
+          call_iff<fire_t *>( (fire_t *)thinker ) ||
+          call_iff<floormove_t *>( (floormove_t *)thinker ) ||
+          call_iff<ceiling_t *>( (ceiling_t *)thinker ) ||
+          call_iff<glow_t *>( (glow_t *)thinker ) ||
+          call_iff<strobe_t *>( (strobe_t *)thinker ) ||
+          call_iff<vldoor_t *>( (vldoor_t *)thinker ) ||
+          call_iff<plat_t *>( (plat_t *)thinker ) ||
+          call_iff<lightflash_t *>( (lightflash_t *)thinker ) ||
+          call_iff<fireflicker_t *>( (fireflicker_t *)thinker ) ||
+          call_iff<thinker_t *>( (thinker_t*)thinker ) ||
+          call_iff<mobj_t *>( thinker ) ||
+          call_iff<player_t *, pspdef_t *>( (player_t *)thinker, (pspdef_t*)psp ) ||
+          call_iff<mobj_t *, player_t *, pspdef_t *>( thinker, (player_t*)player, (pspdef_t*)psp );
+   }
 
   constexpr explicit operator bool() const {
     return *this != actionf_t{};
