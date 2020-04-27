@@ -53,8 +53,8 @@ using actionf = void(*)( Params... parameters );
 struct actionf_t {
   constexpr actionf_t() = default;
 
-  template<typename Ret, typename ... Param>
-  explicit constexpr actionf_t(Ret (*p)(Param...))
+  template<typename ... Param>
+  explicit constexpr actionf_t(void (*p)(Param...))
   {
     std::get<decltype(p)>(data) = p;
   }
@@ -64,8 +64,8 @@ struct actionf_t {
     std::get<int>(data) = p;
   }
 
-  template <typename Ret, typename... Param>
-  constexpr actionf_t &operator=(Ret (*p)(Param...)) {
+  template <typename... Param>
+  constexpr actionf_t &operator=(void (*p)(Param...)) {
     data = actionf_t{p}.data;
     return *this;
   }
@@ -80,8 +80,8 @@ struct actionf_t {
     return std::get<const void *>(data);
   }
 
-  template <typename Ret, typename... Param>
-  [[nodiscard]] constexpr bool operator==(Ret (*p)(Param...)) const {
+  template <typename... Param>
+  [[nodiscard]] constexpr bool operator==(void (*p)(Param...)) const {
     return std::get<decltype(p)>(data) == p;
   }
 
