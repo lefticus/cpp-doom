@@ -55,9 +55,10 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 //
 // T_VerticalDoor
 //
-void T_VerticalDoor (vldoor_t* door)
+void T_VerticalDoor (thinker_t *thinker)
 {
-    result_e	res;
+   auto door = static_cast<vldoor_t*>(thinker);
+   result_e	res;
 	
     switch(door->direction)
     {
@@ -119,7 +120,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case vld_blazeRaise:
 	      case vld_blazeClose:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (door);  // unlink and free
 		// [crispy] fix "fast doors make two closing sounds"
 		if (!crispy->soundfix)
 		S_StartSound(&door->sector->soundorg, sfx_bdcls);
@@ -128,7 +129,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case vld_normal:
 	      case vld_close:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (door);  // unlink and free
 		break;
 		
 	      case vld_close30ThenOpen:
@@ -186,7 +187,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case vld_blazeOpen:
 	      case vld_open:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (door);  // unlink and free
 		break;
 		
 	      default:
@@ -282,10 +283,10 @@ EV_DoDoor
 	// new door thinker
 	rtn = 1;
 	door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
-	P_AddThinker (&door->thinker);
+	P_AddThinker (door);
 	sec->specialdata = door;
 
-	door->thinker.function = T_VerticalDoor;
+	door->function = T_VerticalDoor;
 	door->sector = sec;
 	door->type = type;
 	door->topwait = VDOORWAIT;
@@ -440,7 +441,7 @@ EV_VerticalDoor
 	    {
 		door->direction = 1;	// go back up
 		// [crispy] play sound effect when the door is opened again while going down
-		if (crispy->soundfix && door->thinker.function == T_VerticalDoor)
+		if (crispy->soundfix && door->function == T_VerticalDoor)
 		S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdopn : sfx_doropn);
 	    }
 	    else
@@ -452,14 +453,14 @@ EV_VerticalDoor
                 // In Vanilla, door->direction is set, even though
                 // "specialdata" might not actually point at a door.
 
-                if (door->thinker.function == T_VerticalDoor)
+                if (door->function == T_VerticalDoor)
                 {
                     door->direction = -1;	// start going down immediately
                     // [crispy] play sound effect when the door is closed manually
                     if (crispy->soundfix)
                     S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdcls : sfx_dorcls);
                 }
-                else if (door->thinker.function == T_PlatRaise)
+                else if (door->function == T_PlatRaise)
                 {
                     // Erm, this is a plat, not a door.
                     // This notably causes a problem in ep1-0500.lmp where
@@ -511,9 +512,9 @@ EV_VerticalDoor
     
     // new door thinker
     door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
-    P_AddThinker (&door->thinker);
+    P_AddThinker (door);
     sec->specialdata = door;
-    door->thinker.function = T_VerticalDoor;
+    door->function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 1;
     door->speed = VDOORSPEED;
@@ -562,12 +563,12 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 	
     door = zmalloc<decltype(door)> ( sizeof(*door), PU_LEVSPEC, 0);
 
-    P_AddThinker (&door->thinker);
+    P_AddThinker (door);
 
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function = T_VerticalDoor;
+    door->function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 0;
     door->type = vld_normal;
@@ -587,12 +588,12 @@ P_SpawnDoorRaiseIn5Mins
 	
     door = zmalloc<decltype(door)> ( sizeof(*door), PU_LEVSPEC, 0);
     
-    P_AddThinker (&door->thinker);
+    P_AddThinker (door);
 
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function = T_VerticalDoor;
+    door->function = T_VerticalDoor;
     door->sector = sec;
     door->direction = 2;
     door->type = vld_raiseIn5Mins;
@@ -693,7 +694,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 		if (door->type == sdt_openOnly)
 		{
 		    door->frontsector->specialdata = NULL;
-		    P_RemoveThinker (&door->thinker);
+		    P_RemoveThinker (door);
 		    break;
 		}
 					
@@ -741,7 +742,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 		// IF DOOR IS DONE CLOSING...
 		door->line->flags |= ML_BLOCKING;
 		door->frontsector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);
+		P_RemoveThinker (door);
 		break;
 	    }
 	    else
@@ -797,7 +798,7 @@ EV_SlidingDoor
     if (!door)
     {
 	door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
-	P_AddThinker (&door->thinker);
+	P_AddThinker (door);
 	sec->specialdata = door;
 		
 	door->type = sdt_openAndClose;
@@ -809,7 +810,7 @@ EV_SlidingDoor
 			
 	door->frontsector = sec;
 	door->backsector = line->backsector;
-	door->thinker.function = T_SlidingDoor;
+	door->function = T_SlidingDoor;
 	door->timer = SWAITTICS;
 	door->frame = 0;
 	door->line = line;

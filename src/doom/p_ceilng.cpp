@@ -43,9 +43,10 @@ ceiling_t*	activeceilings[MAXCEILINGS];
 // T_MoveCeiling
 //
 
-void T_MoveCeiling (ceiling_t* ceiling)
+void T_MoveCeiling (thinker_t *thinker)
 {
-    result_e	res;
+   auto ceiling = static_cast<ceiling_t*>(thinker);
+   result_e	res;
 	
     switch(ceiling->direction)
     {
@@ -191,9 +192,9 @@ EV_DoCeiling
 	// new door thinker
 	rtn = 1;
 	ceiling = zmalloc<decltype(ceiling)> (sizeof(*ceiling), PU_LEVSPEC, 0);
-	P_AddThinker (&ceiling->thinker);
+	P_AddThinker (ceiling);
 	sec->specialdata = ceiling;
-	ceiling->thinker.function = T_MoveCeiling;
+	ceiling->function = T_MoveCeiling;
 	ceiling->sector = sec;
 	ceiling->crush = false;
 	
@@ -266,7 +267,7 @@ void P_RemoveActiveCeiling(ceiling_t* c)
 	if (activeceilings[i] == c)
 	{
 	    activeceilings[i]->sector->specialdata = NULL;
-	    P_RemoveThinker (&activeceilings[i]->thinker);
+	    P_RemoveThinker (activeceilings[i]);
 	    activeceilings[i] = NULL;
 	    break;
 	}
@@ -289,7 +290,7 @@ void P_ActivateInStasisCeiling(line_t* line)
 	    && (activeceilings[i]->direction == 0))
 	{
 	    activeceilings[i]->direction = activeceilings[i]->olddirection;
-	    activeceilings[i]->thinker.function = T_MoveCeiling;
+	    activeceilings[i]->function = T_MoveCeiling;
 	}
     }
 }
@@ -313,7 +314,7 @@ int	EV_CeilingCrushStop(line_t	*line)
 	    && (activeceilings[i]->direction != 0))
 	{
 	    activeceilings[i]->olddirection = activeceilings[i]->direction;
-	    activeceilings[i]->thinker.function = actionf_t{};
+	    activeceilings[i]->function = actionf_t{};
 	    activeceilings[i]->direction = 0;		// in-stasis
 	    rtn = 1;
 	}

@@ -207,9 +207,10 @@ T_MovePlane
 //
 // MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
 //
-void T_MoveFloor(floormove_t* floor)
+void T_MoveFloor(thinker_t* thinker)
 {
-    result_e	res;
+   auto floor = static_cast<floormove_t*>(thinker);
+   result_e	res;
 	
     res = T_MovePlane(floor->sector,
 		      floor->speed,
@@ -245,7 +246,7 @@ void T_MoveFloor(floormove_t* floor)
 		break;
 	    }
 	}
-	P_RemoveThinker(&floor->thinker);
+	P_RemoveThinker(floor);
 
 	S_StartSound(&floor->sector->soundorg, sfx_pstop);
     }
@@ -253,9 +254,10 @@ void T_MoveFloor(floormove_t* floor)
 }
 
 // [crispy] easter egg: homage to an old friend (thinker)
-void T_MoveGoobers (floormove_t *floor)
+void T_MoveGoobers (thinker_t *thinker)
 {
-    result_e res1, res2;
+   auto floor = static_cast<floormove_t*>(thinker);
+   result_e res1, res2;
 
     // [crispy] one thinker for the floors ...
     res1 = T_MovePlane(floor->sector, 2 * FLOORSPEED, 0,
@@ -277,7 +279,7 @@ void T_MoveGoobers (floormove_t *floor)
     if ((res1 & res2) == pastdest)
     {
 	floor->sector->specialdata = NULL;
-	P_RemoveThinker(&floor->thinker);
+	P_RemoveThinker(floor);
 
 	S_StartSound(&floor->sector->soundorg, sfx_pstop);
     }
@@ -299,14 +301,14 @@ void EV_DoGoobers (void)
 	if (sec->specialdata)
 	{
 	    floor = static_cast<floormove_t *>(sec->specialdata);
-	    P_RemoveThinker(&floor->thinker);
+	    P_RemoveThinker(floor);
 	    sec->specialdata = NULL;
 	}
 
 	floor = zmalloc<decltype(floor)>(sizeof(*floor), PU_LEVSPEC, 0);
-	P_AddThinker(&floor->thinker);
+	P_AddThinker(floor);
 	sec->specialdata = floor;
-	floor->thinker.function = T_MoveGoobers;
+	floor->function = T_MoveGoobers;
 	floor->sector = sec;
 	// [crispy] actually destination ceilingheight here (destination floorheight is always 0),
 	// leave destination ceilingheight for untagged closed sectors (i.e. DR-type doors) at 0,
@@ -347,9 +349,9 @@ EV_DoFloor
 	// new floor thinker
 	rtn = 1;
 	floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
-	P_AddThinker (&floor->thinker);
+	P_AddThinker (floor);
 	sec->specialdata = floor;
-	floor->thinker.function = T_MoveFloor;
+	floor->function = T_MoveFloor;
 	floor->type = floortype;
 	floor->crush = false;
 
@@ -551,9 +553,9 @@ EV_BuildStairs
 	// new floor thinker
 	rtn = 1;
 	floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
-	P_AddThinker (&floor->thinker);
+	P_AddThinker (floor);
 	sec->specialdata = floor;
-	floor->thinker.function = T_MoveFloor;
+	floor->function = T_MoveFloor;
 	floor->direction = 1;
 	floor->sector = sec;
 	switch(type)
@@ -611,10 +613,10 @@ EV_BuildStairs
 		secnum = newsecnum;
 		floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
 
-		P_AddThinker (&floor->thinker);
+		P_AddThinker (floor);
 
 		sec->specialdata = floor;
-		floor->thinker.function = T_MoveFloor;
+		floor->function = T_MoveFloor;
 		floor->direction = 1;
 		floor->sector = sec;
 		floor->speed = speed;
