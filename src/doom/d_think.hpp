@@ -47,20 +47,8 @@ struct strobe_t;
 struct glow_t;
 struct thinker_t;
 
-typedef void (*actionf_v)();
-typedef void (*actionf_f1)(fire_t *mo);
-typedef void (*actionf_fm1)(floormove_t *mo);
-typedef void (*actionf_c1)(ceiling_t *mo);
-typedef void (*actionf_g1)(glow_t *mo);
-typedef void (*actionf_s1)(strobe_t *mo);
-typedef void (*actionf_v1)(vldoor_t *mo);
-typedef void (*actionf_pp1)(plat_t *mo);
-typedef void (*actionf_lf1)(lightflash_t *mo);
-typedef void (*actionf_ff1)(fireflicker_t *mo);
-typedef void (*actionf_t1)(thinker_t *mo);
-typedef void (*actionf_p1)(mobj_t *mo);
-typedef void (*actionf_p2)(player_t *player, pspdef_t *psp );
-typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp); // [crispy] let pspr action pointers get called from mobj states
+template<typename... Params>
+using actionf = void(*)( Params... parameters );
 
 struct actionf_t {
   constexpr actionf_t() = default;
@@ -144,9 +132,21 @@ struct actionf_t {
   constexpr bool operator==(const actionf_t &) const = default;
 
 private:
-  std::tuple<const void *, actionf_t1, actionf_g1, actionf_s1, actionf_fm1, actionf_v, actionf_c1, actionf_f1,
-             actionf_lf1, actionf_ff1, actionf_v1, actionf_p1, actionf_pp1,
-             actionf_p2, actionf_p3>
+   std::tuple<int, const void *,
+              actionf<>,
+              actionf<fire_t *>,
+              actionf<floormove_t *>,
+              actionf<ceiling_t *>,
+              actionf<glow_t *>,
+              actionf<strobe_t *>,
+              actionf<vldoor_t *>,
+              actionf<plat_t *>,
+              actionf<lightflash_t *>,
+              actionf<fireflicker_t *>,
+              actionf<thinker_t *>,
+              actionf<mobj_t *>,
+              actionf<player_t *, pspdef_t *>,
+              actionf<mobj_t *, player_t *, pspdef_t *> >
       data{};
 };
 
