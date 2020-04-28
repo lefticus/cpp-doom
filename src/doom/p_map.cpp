@@ -1138,7 +1138,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 	// [crispy] update laser spot position and return
 	if (la_damage == INT_MIN)
 	{
-	    laserspot->thinker.function = actionf_t{1};
+	    laserspot->thinker.function = think_t{1};
 	    laserspot->x = x;
 	    laserspot->y = y;
 	    laserspot->z = z;
@@ -1191,7 +1191,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 	if (th->flags & MF_SHADOW)
 	    return true;
 
-	laserspot->thinker.function = actionf_t{1};
+	laserspot->thinker.function = think_t{1};
 	laserspot->x = th->x;
 	laserspot->y = th->y;
 	laserspot->z = z;
@@ -1302,7 +1302,7 @@ P_LineLaser
 {
     fixed_t	lslope;
 
-    laserspot->thinker.function = actionf_t{};
+    laserspot->thinker.function = think_t{};
 
     // [crispy] intercepts overflow guard
     crispy->crosshair |= CROSSHAIR_INTERCEPT;
