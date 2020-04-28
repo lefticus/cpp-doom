@@ -36,9 +36,7 @@
 struct mobj_t;
 struct player_t;
 struct pspdef_t;
-struct thinker_t;
 
-typedef void (*actionf_t1)(thinker_t *mo);
 typedef void (*actionf_m1)(mobj_t *mo);
 typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 
@@ -107,7 +105,9 @@ private:
 };
 
 
+struct thinker_t;
 
+typedef void (*thinkerf)(thinker_t *mo);
 
 // Historically, "think_t" is yet another
 //  function pointer to a routine to handle
@@ -116,9 +116,9 @@ class think_t {
 public:
    constexpr think_t() = default;
 
-  constexpr think_t(actionf_t1 p)
+  constexpr think_t(thinkerf p)
   {
-    std::get<actionf_t1>(data) = p;
+    std::get<thinkerf>(data) = p;
   }
 
   constexpr think_t(int        p)
@@ -126,7 +126,7 @@ public:
     std::get<int>(data) = p;
   }
 
-  constexpr think_t &operator=(actionf_t1 p) {
+  constexpr think_t &operator=(thinkerf p) {
     data = think_t{p}.data;
     return *this;
   }
@@ -141,13 +141,13 @@ public:
     return std::get<const void *>(data);
   }
 
-  [[nodiscard]] constexpr bool operator==(actionf_t1 p) const {
+  [[nodiscard]] constexpr bool operator==(thinkerf p) const {
     return std::get<decltype(p)>(data) == p;
   }
 
   // Called only from p_tick.cpp P_RunThinkers
   bool call_if( thinker_t *thinker) {
-     const auto func = std::get<actionf_t1>(data);
+     const auto func = std::get<thinkerf>(data);
      if (func) {
       func(thinker);
       return true;
@@ -163,7 +163,7 @@ public:
   constexpr bool operator==(const think_t &) const = default;
 
 private:
-   std::tuple<int, const void *, actionf_t1> data{};
+   std::tuple<int, const void *, thinkerf> data{};
 
 };
 
