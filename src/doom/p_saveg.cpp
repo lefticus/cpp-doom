@@ -259,11 +259,18 @@ static void saveg_write_actionf_t(actionf_t *str)
 //
 // think_t
 //
-// This is just an actionf_t.
-//
+static void saveg_read_think_t(think_t *str)
+{
+    // actionf_p1 acp1;
+    *str = saveg_readp();
+}
 
-#define saveg_read_think_t saveg_read_actionf_t
-#define saveg_write_think_t saveg_write_actionf_t
+static void saveg_write_think_t(think_t *str)
+{
+    // actionf_p1 acp1;
+  saveg_writep(static_cast<const void *>(*str));
+}
+
 
 //
 // thinker_t
@@ -1805,7 +1812,7 @@ void P_ArchiveSpecials (void)
     // save off the current thinkers
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-	if (th->function == actionf_t{})
+	if (th->function == think_t{})
 	{
 	    for (i = 0; i < MAXCEILINGS;i++)
 		if (activeceilings[i] == (ceiling_t *)th)

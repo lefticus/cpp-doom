@@ -271,7 +271,7 @@ void EV_StopPlat(line_t* line)
 	{
 	    (activeplats[j])->oldstatus = (activeplats[j])->status;
 	    (activeplats[j])->status = in_stasis;
-	    (activeplats[j])->function = actionf_t{};
+	    (activeplats[j])->function = think_t{};
 	}
 }
 
