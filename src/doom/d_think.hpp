@@ -23,7 +23,7 @@
 #define __D_THINK__
 
 #include <tuple>
-
+#include <cassert>
 
 
 //
@@ -79,16 +79,20 @@ struct actionf_t {
       func(param...);
       return true;
     } else {
-      return false;
+       assert(*this == actionf_t{});
+       return false;
     }
   }
 
-   // Called from p_pspr.cpp P_SetPsprite with real player and psp
+   // Called from only p_pspr.cpp P_SetPsprite with real player and psp
    // and from (state_t action function, not think function)
-   // p_mobj.cpp P_SetMobjState with null player and null psp
    bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
-      return call_iff( mo ) ||
-         call_iff( mo, player, psp );
+      return call_iff( mo, player, psp );
+   }
+
+   // called from only p_mobj.cpp P_SetMobjState with null player and null psp
+   bool call_if( mobj_t *mo ){
+      return call_iff( mo );
    }
 
   constexpr explicit operator bool() const {
