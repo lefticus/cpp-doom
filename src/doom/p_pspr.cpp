@@ -86,7 +86,7 @@ P_SetPsprite
   statenum_t	stnum ) 
 {
     pspdef_t*	psp;
-    state_t*	state;
+    psp_state_t*	state;
 	
     psp = &player->psprites[position];
 	
@@ -99,7 +99,7 @@ P_SetPsprite
 	    break;	
 	}
 	
-	state = &states[stnum];
+	state = &psp_states[stnum];
 	psp->state = state;
 	psp->tics = state->tics;	// could be 0
 
@@ -339,14 +339,14 @@ A_WeaponReady
     
     if (!player) return; // [crispy] let pspr action pointers get called from mobj states
     // get out of attack state
-    if (player->mo->state == &states[S_PLAY_ATK1]
-	|| player->mo->state == &states[S_PLAY_ATK2] )
+    if (player->mo->state == &mo_states[S_PLAY_ATK1]
+	|| player->mo->state == &mo_states[S_PLAY_ATK2] )
     {
 	P_SetMobjState (player->mo, S_PLAY);
     }
     
     if (player->readyweapon == wp_chainsaw
-	&& psp->state == &states[S_SAW])
+	&& psp->state == &psp_states[S_SAW])
     {
 	S_StartSound (player->so, sfx_sawidl); // [crispy] weapon sound source
     }
@@ -871,7 +871,7 @@ A_FireCGun
     P_SetPsprite (player,
 		  ps_flash,
         static_cast<statenum_t>(weaponinfo[player->readyweapon].flashstate +
-                                psp->state - &states[S_CHAIN1]));
+                                psp->state - &psp_states[S_CHAIN1]));
 
     P_BulletSlope (player->mo);
 	
@@ -984,7 +984,7 @@ void P_MovePsprites (player_t* player)
 {
     int		i;
     pspdef_t*	psp;
-    state_t*	state;
+    psp_state_t*	state;
 	
     psp = &player->psprites[0];
     for (i=0 ; i<NUMPSPRITES ; i++, psp++)

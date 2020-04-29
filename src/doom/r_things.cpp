@@ -786,7 +786,7 @@ void R_ProjectSprite (mobj_t* thing)
 
     // [crispy] colored blood
     if (crispy->coloredblood &&
-        (thing->type == MT_BLOOD || thing->state - states == S_GIBS) &&
+        (thing->type == MT_BLOOD || thing->state - mo_states == S_GIBS) &&
         thing->target)
     {
 	// [crispy] Thorn Things in Hacx bleed green blood
@@ -1072,7 +1072,7 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 	vis->colormap[0] = spritelights[MAXLIGHTSCALE-1];
 	vis->colormap[1] = scalelight[LIGHTLEVELS-1][MAXLIGHTSCALE-1];
     }
-    vis->brightmap = R_BrightmapForState(psp->state - states);
+    vis->brightmap = R_BrightmapForState(psp->state - psp_states);
 	
     // [crispy] translucent gun flash sprites
     if (psprnum == ps_flash)

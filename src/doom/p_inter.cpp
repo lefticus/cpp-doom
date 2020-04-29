@@ -970,7 +970,7 @@ P_DamageMobj
 	// chase after this one
 	target->target = source;
 	target->threshold = BASETHRESHOLD;
-	if (target->state == &states[target->info->spawnstate]
+	if (target->state == &mo_states[target->info->spawnstate]
 	    && target->info->seestate != S_NULL)
 	    P_SetMobjState (target,
                          static_cast<statenum_t>(target->info->seestate));

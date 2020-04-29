@@ -291,7 +291,7 @@ static void P_WriteBrainTarget (const char *key)
 		{
 			mobj_t *mo = (mobj_t *)th;
 
-			if (mo->state == &states[S_BRAINEYE1])
+			if (mo->state == &mo_states[S_BRAINEYE1])
 			{
 				M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n",
 				           key,

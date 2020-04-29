@@ -176,7 +176,7 @@ void P_MovePlayer (player_t* player)
             P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
 
     if ( (cmd->forwardmove || cmd->sidemove) 
-	 && player->mo->state == &states[S_PLAY] )
+	 && player->mo->state == &mo_states[S_PLAY] )
     {
 	P_SetMobjState (player->mo, S_PLAY_RUN1);
     }

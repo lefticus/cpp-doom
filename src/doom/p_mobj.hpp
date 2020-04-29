@@ -247,7 +247,7 @@ struct mobj_t : public thinker_t
     mobjinfo_t*		info;	// &mobjinfo[mobj->type]
     
     int			tics;	// state tic counter
-    state_t*		state;
+    mo_state_t*		state;
     int			flags;
     int			health;
 

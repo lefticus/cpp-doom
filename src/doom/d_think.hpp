@@ -40,6 +40,107 @@ struct pspdef_t;
 typedef void (*actionf_m1)(mobj_t *mo);
 typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 
+struct psp_actionf_t {
+  constexpr psp_actionf_t() = default;
+
+  constexpr psp_actionf_t(actionf_p3 p)
+  {
+    std::get<actionf_p3>(data) = p;
+  }
+
+  constexpr psp_actionf_t(actionf_m1 m)
+  {
+  }
+
+  constexpr psp_actionf_t &operator=(actionf_p3 p) {
+    data = psp_actionf_t{p}.data;
+    return *this;
+  }
+
+  constexpr psp_actionf_t &operator=(const void *p) {
+    data = psp_actionf_t{}.data;
+    std::get<const void *>(data) = p;
+    return *this;
+  }
+
+  [[nodiscard]] constexpr explicit operator const void *() {
+    return std::get<const void *>(data);
+  }
+
+  [[nodiscard]] constexpr bool operator==(actionf_p3 p) const {
+    return std::get<decltype(p)>(data) == p;
+  }
+
+  constexpr bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
+    const auto func = std::get<actionf_p3>(data);
+    if (func) {
+       func(mo,player,psp);
+      return true;
+    } else {
+       assert(*this == psp_actionf_t{});
+       return false;
+    }
+  }
+
+  constexpr explicit operator bool() const {
+    return *this != psp_actionf_t{};
+  }
+
+  constexpr bool operator==(const psp_actionf_t &) const = default;
+
+private:
+   std::tuple<const void *,
+              actionf_p3>
+      data{};
+};
+
+struct mo_actionf_t {
+  constexpr mo_actionf_t() = default;
+
+  constexpr mo_actionf_t(actionf_m1 p)
+  {
+    std::get<actionf_m1>(data) = p;
+  }
+
+  constexpr mo_actionf_t(actionf_p3 p)
+  {
+  }
+
+  constexpr mo_actionf_t &operator=(const void *p) {
+    data = mo_actionf_t{}.data;
+    std::get<const void *>(data) = p;
+    return *this;
+  }
+
+  [[nodiscard]] constexpr explicit operator const void *() {
+    return std::get<const void *>(data);
+  }
+
+  [[nodiscard]] constexpr bool operator==(actionf_m1 p) const {
+    return std::get<decltype(p)>(data) == p;
+  }
+
+   constexpr bool call_if(mobj_t *mo) {
+    const auto func = std::get<actionf_m1>(data);
+    if (func) {
+      func(mo);
+      return true;
+    } else {
+       assert(*this == mo_actionf_t{});
+       return false;
+    }
+  }
+
+  constexpr explicit operator bool() const {
+    return *this != mo_actionf_t{};
+  }
+
+  constexpr bool operator==(const mo_actionf_t &) const = default;
+
+private:
+   std::tuple<const void *, actionf_m1>      data{};
+};
+
 struct actionf_t {
   constexpr actionf_t() = default;
 

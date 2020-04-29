@@ -1803,7 +1803,7 @@ static byte* ST_WidgetColor(int i)
 // in sync with the actual player sprite
 static inline void ST_DrawGibbedPlayerSprites (void)
 {
-	state_t const *state = plyr->mo->state;
+	mo_state_t const *state = plyr->mo->state;
 	spritedef_t *sprdef;
 	spriteframe_t *sprframe;
 	patch_t *patch;
@@ -1874,7 +1874,7 @@ void ST_drawWidgets(boolean refresh)
 
 	// [crispy] draw the gibbed death state frames in the Health widget
 	// in sync with the actual player sprite
-	if (plyr->health <= 0 && plyr->mo->state - states >= mobjinfo[plyr->mo->type].xdeathstate)
+	if (plyr->health <= 0 && plyr->mo->state - mo_states >= mobjinfo[plyr->mo->type].xdeathstate)
 	{
 		ST_DrawGibbedPlayerSprites();
 		gibbed = true;

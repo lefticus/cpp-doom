@@ -61,7 +61,7 @@ typedef enum
 
 struct pspdef_t
 {
-    state_t*	state;	// a NULL state means not active
+    psp_state_t*	state;	// a NULL state means not active
     int		tics;
     fixed_t	sx;
     fixed_t	sy;

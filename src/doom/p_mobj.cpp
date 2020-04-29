@@ -56,19 +56,19 @@ P_SetMobjState
 ( mobj_t*	mobj,
   statenum_t	state )
 {
-    state_t*	st;
+    mo_state_t*	st;
     int	cycle_counter = 0;
 
     do
     {
 	if (state == S_NULL)
 	{
-	    mobj->state = (state_t *) S_NULL;
+	    mobj->state = (mo_state_t *) S_NULL;
 	    P_RemoveMobj (mobj);
 	    return false;
 	}
 
-	st = &states[state];
+	st = &mo_states[state];
 	mobj->state = st;
 	mobj->tics = st->tics;
 	mobj->sprite = st->sprite;
@@ -101,20 +101,20 @@ static statenum_t P_LatestSafeState(statenum_t state)
 	return lastsafestate;
     }
 
-    for (laststate = state; state != S_NULL; state = states[state].nextstate)
+    for (laststate = state; state != S_NULL; state = mo_states[state].nextstate)
     {
 	if (safestate == S_NULL)
 	{
 	    safestate = state;
 	}
 
-	if (states[state].action)
+	if (mo_states[state].action)
 	{
 	    safestate = S_NULL;
 	}
 
 	// [crispy] a state with -1 tics never changes
-	if (states[state].tics == -1 || state == states[state].nextstate)
+	if (mo_states[state].tics == -1 || state == mo_states[state].nextstate)
 	{
 	    break;
 	}
@@ -283,7 +283,7 @@ void P_XYMovement (mobj_t* mo)
 		&& player->cmd.sidemove == 0 ) ) )
     {
 	// if in a walking frame, stop moving
-	if ( player&&(unsigned)((player->mo->state - states)- S_PLAY_RUN1) < 4)
+	if ( player&&(unsigned)((player->mo->state - mo_states)- S_PLAY_RUN1) < 4)
 	    P_SetMobjState (player->mo, S_PLAY);
 	
 	mo->momx = 0;
@@ -626,7 +626,7 @@ P_SpawnMobjSafe
   boolean safe )
 {
     mobj_t*	mobj;
-    state_t*	st;
+    mo_state_t*	st;
     mobjinfo_t*	info;
 	
     mobj = zmalloc<decltype(mobj)> (sizeof(*mobj), PU_LEVEL, NULL);
@@ -648,7 +648,7 @@ P_SpawnMobjSafe
     mobj->lastlook = safe ? Crispy_Random () % MAXPLAYERS : P_Random () % MAXPLAYERS;
     // do not set the state with P_SetMobjState,
     // because action routines can not be called yet
-    st = &states[safe ? P_LatestSafeState(
+    st = &mo_states[safe ? P_LatestSafeState(
                             static_cast<statenum_t>(info->spawnstate)) : info->spawnstate];
 
     mobj->state = st;

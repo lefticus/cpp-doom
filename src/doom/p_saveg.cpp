@@ -378,7 +378,7 @@ static void saveg_read_mobj_t(mobj_t *str)
     str->tics = saveg_read32();
 
     // state_t* state;
-    str->state = &states[saveg_read32()];
+    str->state = &mo_states[saveg_read32()];
 
     // int flags;
     str->flags = saveg_read32();
@@ -543,7 +543,7 @@ static void saveg_write_mobj_t(mobj_t *str)
     saveg_write32(str->tics);
 
     // state_t* state;
-    saveg_write32(str->state - states);
+    saveg_write32(str->state - mo_states);
 
     // int flags;
     saveg_write32(str->flags);
@@ -652,7 +652,7 @@ static void saveg_read_pspdef_t(pspdef_t *str)
 
     if (state > 0)
     {
-        str->state = &states[state];
+        str->state = &psp_states[state];
     }
     else
     {
@@ -679,7 +679,7 @@ static void saveg_write_pspdef_t(pspdef_t *str)
     // state_t* state;
     if (str->state)
     {
-        saveg_write32(str->state - states);
+        saveg_write32(str->state - psp_states);
     }
     else
     {
