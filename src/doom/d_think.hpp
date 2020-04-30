@@ -43,12 +43,12 @@ typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 struct psp_actionf_t {
   constexpr psp_actionf_t() = default;
 
-  constexpr psp_actionf_t(actionf_p3 p)
+  constexpr psp_actionf_t(const actionf_p3 p)
   {
     std::get<actionf_p3>(data) = p;
   }
 
-  constexpr psp_actionf_t(actionf_m1 m)
+  constexpr psp_actionf_t(const actionf_m1 m)
   {
   }
 
@@ -97,12 +97,12 @@ private:
 struct mo_actionf_t {
   constexpr mo_actionf_t() = default;
 
-  constexpr mo_actionf_t(actionf_m1 p)
+  constexpr mo_actionf_t(const actionf_m1 p)
   {
     std::get<actionf_m1>(data) = p;
   }
 
-  constexpr mo_actionf_t(actionf_p3 p)
+  constexpr mo_actionf_t(const actionf_p3 p)
   {
   }
 
@@ -141,73 +141,6 @@ private:
    std::tuple<const void *, actionf_m1>      data{};
 };
 
-struct actionf_t {
-  constexpr actionf_t() = default;
-
-  constexpr actionf_t(actionf_m1 p)
-  {
-    std::get<actionf_m1>(data) = p;
-  }
-
-  constexpr actionf_t(actionf_p3 p)
-  {
-    std::get<actionf_p3>(data) = p;
-  }
-
-  constexpr actionf_t &operator=(actionf_p3 p) {
-    data = actionf_t{p}.data;
-    return *this;
-  }
-
-  constexpr actionf_t &operator=(const void *p) {
-    data = actionf_t{}.data;
-    std::get<const void *>(data) = p;
-    return *this;
-  }
-
-  [[nodiscard]] constexpr explicit operator const void *() {
-    return std::get<const void *>(data);
-  }
-
-  template <typename... Param>
-  [[nodiscard]] constexpr bool operator==(void (*p)(Param...)) const {
-    return std::get<decltype(p)>(data) == p;
-  }
-
-  template <typename... Param> constexpr bool call_iff(Param... param) {
-    const auto func = std::get<void (*)(Param...)>(data);
-    if (func) {
-      func(param...);
-      return true;
-    } else {
-       assert(*this == actionf_t{});
-       return false;
-    }
-  }
-
-   // Called from only p_pspr.cpp P_SetPsprite with real player and psp
-   // and from (state_t action function, not think function)
-   bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
-      return call_iff( mo, player, psp );
-   }
-
-   // called from only p_mobj.cpp P_SetMobjState with null player and null psp
-   bool call_if( mobj_t *mo ){
-      return call_iff( mo );
-   }
-
-  constexpr explicit operator bool() const {
-    return *this != actionf_t{};
-  }
-
-  constexpr bool operator==(const actionf_t &) const = default;
-
-private:
-   std::tuple<const void *,
-              actionf_m1,
-              actionf_p3>
-      data{};
-};
 
 
 struct thinker_t;

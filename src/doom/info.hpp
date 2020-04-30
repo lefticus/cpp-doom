@@ -1258,20 +1258,6 @@ typedef struct
     int misc2;
 } mo_state_t;
 
-typedef struct
-{
-    spritenum_t sprite;
-    int frame;
-    int tics;
-    // void (*action) ();
-    actionf_t action;
-    statenum_t nextstate;
-    int misc1;
-    int misc2;
-} state_t;
-
-inline state_t states[NUMSTATES];
-   
 inline constinit psp_state_t psp_states[NUMSTATES] = {
     {SPR_TROO, 0, -1, {}, S_NULL, 0, 0},                  // S_NULL
     {SPR_SHTG, 4, 0, {A_Light0}, S_NULL, 0, 0},           // S_LIGHTDONE
@@ -3425,6 +3411,10 @@ inline constinit mo_state_t mo_states[NUMSTATES] = {
     {SPR_SKUL, 16, 5, {A_Stop}, S_BSKUL_DIE8, 0, 0},           // S_BSKUL_DIE8
     {SPR_MISL, 32769, 8, {A_Mushroom}, S_EXPLODE2, 0, 0},      // S_MUSHROOM
 };
+
+#define states mo_states
+#define actionf_t mo_actionf_t
+#define state_t mo_state_t
 
 extern const char *sprnames[];
 

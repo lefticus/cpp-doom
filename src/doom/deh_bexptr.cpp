@@ -125,8 +125,6 @@ static const bex_codeptr_t bex_codeptrtable[] = {
     {"NULL", {}},
 };
 
-extern actionf_t codeptrs[NUMSTATES];
-
 static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 {
     char s[10];

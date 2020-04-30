@@ -451,7 +451,7 @@ static int F_RandomizeSound (int sound)
 
 struct actionsound_t
 {
-	actionf_t action;
+	mo_actionf_t action;
 	const int sound;
 	const boolean early;
 };
@@ -486,7 +486,7 @@ static int F_SoundForState (int st)
 	const auto nextaction = (&states[caststate->nextstate])->action;
 
 	// [crispy] fix Doomguy in casting sequence
-	if (castaction == actionf_t{})
+	if (castaction == mo_actionf_t{})
 	{
 		if (st == S_PLAY_ATK2)
 			return sfx_dshtgn;
