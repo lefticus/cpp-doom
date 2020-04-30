@@ -91,7 +91,7 @@ void D_DoomLoop (void);
 
 // Location where savegames are stored
 
-char *          savegamedir;
+const char *          savegamedir;
 
 // location of IWAD and WAD files
 

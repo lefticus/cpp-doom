@@ -41,7 +41,7 @@ typedef struct
     unsigned int count;
 } gus_config_t;
 
-char *gus_patch_path = "";
+const char *gus_patch_path = "";
 int gus_ram_kb = 1024;
 
 static unsigned int MappingIndex(void)

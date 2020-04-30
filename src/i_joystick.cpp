@@ -45,7 +45,7 @@ static SDL_Joystick *joystick = NULL;
 static int usejoystick = 0;
 
 // SDL GUID and index of the joystick to use.
-static char *joystick_guid = "";
+static const char *joystick_guid = "";
 static int joystick_index = -1;
 
 // Which joystick axis to use for horizontal movement, and whether to

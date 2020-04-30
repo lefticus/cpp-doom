@@ -248,7 +248,7 @@ extern  wbstartstruct_t		wminfo;
 //
 
 // File handling stuff.
-extern  char        *savegamedir;
+extern  const char        *savegamedir;
 
 // if true, load all graphics at level load
 extern  boolean         precache;

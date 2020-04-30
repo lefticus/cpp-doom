@@ -47,7 +47,7 @@
 
 const char *configdir;
 
-static char *autoload_path = "";
+static const char *autoload_path = "";
 
 // Default filenames for configuration files.
 
@@ -71,7 +71,7 @@ typedef struct
     // Pointer to the location in memory of the variable
     union {
         int *i;
-        char **s;
+        const char **s;
         float *f;
     } location;
 
@@ -2629,7 +2629,7 @@ void M_BindFloatVariable(const char *name, float *location)
     variable->bound = true;
 }
 
-void M_BindStringVariable(const char *name, char **location)
+void M_BindStringVariable(const char *name, const char **location)
 {
     default_t *variable;
 
@@ -2806,9 +2806,9 @@ void M_SetMusicPackDir(void)
 // Creates the directory as necessary.
 //
 
-char *M_GetSaveGameDir(const char *iwadname)
+const char *M_GetSaveGameDir(const char *iwadname)
 {
-    char *savegamedir;
+    const char *savegamedir;
     char *topdir;
     int p;
 

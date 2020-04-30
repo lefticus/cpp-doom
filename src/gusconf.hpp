@@ -20,7 +20,7 @@
 
 #include "doomtype.hpp"
 
-extern char *gus_patch_path;
+extern const char *gus_patch_path;
 extern int gus_ram_kb;
 
 boolean GUS_WriteConfig(char *path);

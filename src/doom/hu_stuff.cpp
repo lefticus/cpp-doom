@@ -73,7 +73,7 @@
 #define HU_COORDX	((ORIGWIDTH - 7 * hu_font['A'-HU_FONTSTART]->width) + DELTAWIDTH)
 
 
-char *chat_macros[10] =
+const char *chat_macros[10] =
 {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,
@@ -412,7 +412,7 @@ const char *mapnames_commercial[] =
     MHUSTR_21
 };
 
-static void CrispyReplaceColor (char *str, const int cr, const char *col)
+static void CrispyReplaceColor (const char *str, const int cr, const char *col)
 {
     char *str_replace, col_replace[16];
 
