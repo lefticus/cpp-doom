@@ -1291,13 +1291,13 @@ static void P_InitActualHeights (void)
 
 	for (i = 0; i < NUMMOBJTYPES; i++)
 	{
-		state_t *state;
+		mo_state_t *state;
 		spritedef_t *sprdef;
 		spriteframe_t *sprframe;
 		int lump;
 		patch_t *patch;
 
-		state = &states[mobjinfo[i].spawnstate];
+		state = &mo_states[mobjinfo[i].spawnstate];
 		sprdef = &sprites[state->sprite];
 
 		if (!sprdef->numframes || !(mobjinfo[i].flags & (MF_SOLID|MF_SHOOTABLE)))

@@ -2332,9 +2332,9 @@ G_InitNew
     {
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 	    // [crispy] Fix infinite loop caused by Demon speed bug
-	    if (states[i].tics > 1)
+	    if (mo_states[i].tics > 1)
 	    {
-	    states[i].tics >>= 1;
+	    mo_states[i].tics >>= 1;
 	    }
 	mobjinfo[MT_BRUISERSHOT].speed = 20*FRACUNIT;
 	mobjinfo[MT_HEADSHOT].speed = 20*FRACUNIT;
@@ -2344,7 +2344,7 @@ G_InitNew
     else if (!fastparm && skill != sk_nightmare && fast_applied)
     {
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
-	    states[i].tics <<= 1;
+	    mo_states[i].tics <<= 1;
 	mobjinfo[MT_BRUISERSHOT].speed = 15*FRACUNIT;
 	mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
 	mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;

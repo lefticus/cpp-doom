@@ -53,7 +53,7 @@
 // The sprite, frame, and angle elements determine which patch_t
 // is used to draw the sprite if it is visible.
 // The sprite and frame values are allmost allways set
-// from state_t structures.
+// from mo_state_t structures.
 // The statescr.exe utility generates the states.h and states.c
 // files that contain the sprite/frame numbers from the
 // statescr.txt source file.
