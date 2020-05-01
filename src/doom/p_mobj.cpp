@@ -76,8 +76,7 @@ P_SetMobjState
 
 	// Modified handling.
 	// Call action functions when the state is set
-        st->action.call_if(mobj, static_cast<player_t *>(nullptr),
-                           static_cast<pspdef_t *>(nullptr));
+        st->action.call_if(mobj);
 
 	state = st->nextstate;
 

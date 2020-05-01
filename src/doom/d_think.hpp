@@ -23,7 +23,7 @@
 #define __D_THINK__
 
 #include <tuple>
-
+#include <cassert>
 
 
 //
@@ -43,17 +43,22 @@ typedef void (*actionf_p3)(mobj_t *mo, player_t *player, pspdef_t *psp);
 struct actionf_t {
   constexpr actionf_t() = default;
 
-  explicit constexpr actionf_t(actionf_m1 p)
-  {
-    std::get<actionf_m1>(data) = p;
-  }
-
-  explicit constexpr actionf_t(actionf_p3 p)
+  explicit constexpr actionf_t(const actionf_p3 p)
   {
     std::get<actionf_p3>(data) = p;
   }
 
+  explicit constexpr actionf_t(const actionf_m1 p)
+  {
+    std::get<actionf_m1>(data) = p;
+  }
+
   constexpr actionf_t &operator=(actionf_p3 p) {
+    data = actionf_t{p}.data;
+    return *this;
+  }
+
+  constexpr actionf_t &operator=(actionf_m1 p) {
     data = actionf_t{p}.data;
     return *this;
   }
@@ -68,31 +73,35 @@ struct actionf_t {
     return std::get<const void *>(data);
   }
 
-  template <typename... Param>
-  [[nodiscard]] constexpr bool operator==(void (*p)(Param...)) const {
+  [[nodiscard]] constexpr bool operator==(actionf_p3 p) const {
     return std::get<decltype(p)>(data) == p;
   }
 
-   bool call_if( thinker_t *thinker ){
-      return call_iff( thinker ) ||
-         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
-         call_iff( reinterpret_cast<mobj_t*>(thinker),
-                   (player_t*)nullptr,
-                   (pspdef_t*)nullptr );
-   }
+  [[nodiscard]] constexpr bool operator==(actionf_m1 p) const {
+    return std::get<decltype(p)>(data) == p;
+  }
 
-   bool call_if( mobj_t *thinker ){
-      return call_iff( thinker ) ||
-         call_iff( reinterpret_cast<mobj_t*>(thinker) ) ||
-         call_iff( reinterpret_cast<mobj_t*>(thinker),
-                   (player_t*)nullptr,
-                   (pspdef_t*)nullptr );
-   }
+  constexpr bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
+    const auto func = std::get<actionf_p3>(data);
+    if (func) {
+       func(mo,player,psp);
+      return true;
+    } else {
+       assert(*this == actionf_t{});
+       return false;
+    }
+  }
 
-   bool call_if( mobj_t *mo, player_t *player, pspdef_t *psp ){
-      return call_iff( mo ) ||
-         call_iff( mo, player, psp );
-   }
+   constexpr bool call_if(mobj_t *mo) {
+    const auto func = std::get<actionf_m1>(data);
+    if (func) {
+      func(mo);
+      return true;
+    } else {
+       assert(*this == actionf_t{});
+       return false;
+    }
+  }
 
    constexpr explicit operator bool() const {
     return *this != actionf_t{};
