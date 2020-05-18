@@ -66,6 +66,7 @@ char *P_SaveGameFile(int slot)
     if (filename == NULL)
     {
         filename_size = strlen(savegamedir) + 32;
+        // possible use a shared pointer?
         filename = static_cast<char *>(malloc(filename_size));
     }
 

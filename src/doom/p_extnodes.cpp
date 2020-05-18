@@ -250,7 +250,7 @@ void P_LoadNodes_ZDBSP (int lump, boolean compressed)
 #ifdef HAVE_LIBZ
 	const int len =  W_LumpLength(lump);
 	int outlen, err;
-	z_stream *zstream;
+	z_stream zstream;
 
 	// first estimate for compression rate:
 	// output buffer size == 2.5 * input size
@@ -258,40 +258,38 @@ void P_LoadNodes_ZDBSP (int lump, boolean compressed)
 	output = zmalloc<decltype(output)>(outlen, PU_STATIC, 0);
 
 	// initialize stream state for decompression
-	zstream = malloc(sizeof(*zstream));
-	memset(zstream, 0, sizeof(*zstream));
-	zstream->next_in = data + 4;
-	zstream->avail_in = len - 4;
-	zstream->next_out = output;
-	zstream->avail_out = outlen;
+	memset(&zstream, 0, sizeof(*zstream));
+	zstream.next_in = data + 4;
+	zstream.avail_in = len - 4;
+	zstream.next_out = output;
+	zstream.avail_out = outlen;
 
-	if (inflateInit(zstream) != Z_OK)
+	if (inflateInit(&zstream) != Z_OK)
 	    I_Error("P_LoadNodes: Error during ZDBSP nodes decompression initialization!");
 
 	// resize if output buffer runs full
-	while ((err = inflate(zstream, Z_SYNC_FLUSH)) == Z_OK)
+	while ((err = inflate(&zstream, Z_SYNC_FLUSH)) == Z_OK)
 	{
 	    int outlen_old = outlen;
 	    outlen = 2 * outlen_old;
 	    output = I_Realloc(output, outlen);
-	    zstream->next_out = output + outlen_old;
-	    zstream->avail_out = outlen - outlen_old;
+	    zstream.next_out = output + outlen_old;
+	    zstream.avail_out = outlen - outlen_old;
 	}
 
 	if (err != Z_STREAM_END)
 	    I_Error("P_LoadNodes: Error during ZDBSP nodes decompression!");
 
 	fprintf(stderr, "P_LoadNodes: ZDBSP nodes compression ratio %.3f\n",
-	        (float)zstream->total_out/zstream->total_in);
+	        (float)zstream.total_out/zstream.total_in);
 
 	data = output;
 
-	if (inflateEnd(zstream) != Z_OK)
+	if (inflateEnd(&zstream) != Z_OK)
 	    I_Error("P_LoadNodes: Error during ZDBSP nodes decompression shut-down!");
 
 	// release the original data lump
 	W_ReleaseLumpNum(lump);
-	free(zstream);
 #else
 	I_Error("P_LoadNodes: Compressed ZDBSP nodes are not supported!");
 #endif

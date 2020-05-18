@@ -452,14 +452,14 @@ void P_WriteExtendedSaveGameData (void)
 {
 	int i;
 
-	line = static_cast<char *>(malloc(MAX_LINE_LEN));
+	line = new char[MAX_LINE_LEN];
 
 	for (i = 0; i < arrlen(extsavegdata); i++)
 	{
 		extsavegdata[i].extsavegwritefn(extsavegdata[i].key);
 	}
 
-	free(line);
+	delete line;
 }
 
 static void P_ReadKeyValuePairs (int pass)
@@ -492,16 +492,16 @@ void P_ReadExtendedSaveGameData (int pass)
 	byte episode, map;
 	int lumpnum = -1;
 
-	line = static_cast<char *>(malloc(MAX_LINE_LEN));
-	string = static_cast<char *>(malloc(MAX_STRING_LEN));
+	line = new char [MAX_LINE_LEN];
+	string = new char [MAX_STRING_LEN];
 
 	// [crispy] two-pass reading of extended savegame data
 	if (pass == 1)
 	{
 		P_ReadKeyValuePairs(1);
 
-		free(line);
-		free(string);
+		delete [] line;
+		delete [] string;
 
 		return;
 	}
@@ -557,8 +557,8 @@ void P_ReadExtendedSaveGameData (int pass)
 		}
 	}
 
-	free(line);
-	free(string);
+	delete [] line;
+	delete [] string;
 
 	// [crispy] back to where we started
 	fseek(save_stream, curpos, SEEK_SET);
