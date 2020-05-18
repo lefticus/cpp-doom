@@ -187,7 +187,7 @@ struct thinker_t
     struct thinker_t*	prev;
     struct thinker_t*	next;
     think_t		function;
-    
+    virtual void action() { function.call_if( this ); };
 };
 
 

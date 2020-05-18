@@ -630,7 +630,8 @@ P_SpawnMobjSafe
     mobjinfo_t*	info;
 	
     mobj = zone_malloc<mobj_t>(PU_LEVEL);
-    memset (mobj, 0, sizeof (*mobj));
+    // This will ruin our vtables and doesn't look necessary
+    // memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 	
     mobj->type = type;

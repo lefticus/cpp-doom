@@ -109,7 +109,7 @@ void P_RunThinkers (void)
 	}
 	else
 	{
-            currentthinker->function.call_if(currentthinker);
+            currentthinker->action();
             nextthinker = currentthinker->next;
 	}
 	currentthinker = nextthinker;
