@@ -146,7 +146,7 @@ void P_LoadVertexes (int lump)
     numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-    vertexes = zmalloc<decltype(vertexes)> (numvertexes*sizeof(vertex_t),PU_LEVEL,0);
+    vertexes = zone_malloc_ptr<decltype(vertexes)> (PU_LEVEL,numvertexes);
 
     // Load data into cache.
     data = cache_lump_num<byte *>(lump, PU_STATIC);
@@ -205,7 +205,7 @@ void P_LoadSegs (int lump)
     int                 sidenum;
 	
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-    segs = zmalloc<decltype(segs)> (numsegs*sizeof(seg_t),PU_LEVEL,0);
+    segs = zone_malloc_ptr<decltype(segs)> (PU_LEVEL,numsegs);
     memset (segs, 0, numsegs*sizeof(seg_t));
     data = cache_lump_num<byte*>(lump,PU_STATIC);
 	
@@ -324,7 +324,7 @@ void P_LoadSubsectors (int lump)
     subsector_t*	ss;
 	
     numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-    subsectors = zmalloc<decltype(subsectors)> (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
+    subsectors = zone_malloc_ptr<decltype(subsectors)> (PU_LEVEL,numsubsectors);
     data = cache_lump_num<byte *>(lump,PU_STATIC);
 	
     // [crispy] fail on missing subsectors
@@ -361,7 +361,7 @@ void P_LoadSectors (int lump)
 	I_Error("P_LoadSectors: No sectors in map!");
 
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-    sectors = zmalloc<decltype(sectors)> (numsectors*sizeof(sector_t),PU_LEVEL,0);
+    sectors = zone_malloc_ptr<decltype(sectors)> (PU_LEVEL,numsectors);
     memset (sectors, 0, numsectors*sizeof(sector_t));
     data = cache_lump_num<byte *>(lump,PU_STATIC);
 	
@@ -411,7 +411,7 @@ void P_LoadNodes (int lump)
     node_t*	no;
 	
     numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-    nodes = zmalloc<decltype(nodes)> (numnodes*sizeof(node_t),PU_LEVEL,0);
+    nodes = zone_malloc_ptr<decltype(nodes)> (PU_LEVEL,numnodes);
     data = cache_lump_num<byte *>(lump,PU_STATIC);
 	
     // [crispy] warn about missing nodes
@@ -543,7 +543,7 @@ void P_LoadLineDefs (int lump)
     int warn, warn2; // [crispy] warn about invalid linedefs
 	
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-    lines = zmalloc<decltype(lines)> (numlines*sizeof(line_t),PU_LEVEL,0);
+    lines = zone_malloc_ptr<decltype(lines)> (PU_LEVEL,numlines);
     memset (lines, 0, numlines*sizeof(line_t));
     data = cache_lump_num<byte *>(lump,PU_STATIC);
 	
@@ -685,7 +685,7 @@ void P_LoadSideDefs (int lump)
     side_t*		sd;
 	
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-    sides = zmalloc<decltype(sides)> (numsides*sizeof(side_t),PU_LEVEL,0);
+    sides = zone_malloc_ptr<decltype(sides)> (PU_LEVEL,numsides);
     memset (sides, 0, numsides*sizeof(side_t));
     data = cache_lump_num<byte *>(lump,PU_STATIC);
 	
@@ -730,7 +730,7 @@ boolean P_LoadBlockMap (int lump)
     // adapted from boom202s/P_SETUP.C:1025-1076
     wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, NULL);
     W_ReadLump(lump, wadblockmaplump);
-    blockmaplump = zmalloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, PU_LEVEL, NULL);
+    blockmaplump = zone_malloc_ptr<decltype(blockmaplump)>(PU_LEVEL, count );
     blockmap = blockmaplump + 4;
 
     blockmaplump[0] = SHORT(wadblockmaplump[0]);
@@ -757,8 +757,8 @@ boolean P_LoadBlockMap (int lump)
 	
     // Clear out mobj chains
 
+    blocklinks = zone_malloc_ptr<decltype(blocklinks)>(PU_LEVEL, bmapwidth * bmapheight);
     count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-    blocklinks = zmalloc<decltype(blocklinks)>(count, PU_LEVEL, 0);
     memset(blocklinks, 0, count);
 
     // [crispy] (re-)create BLOCKMAP if necessary
@@ -809,7 +809,7 @@ void P_GroupLines (void)
     }
 
     // build line tables for each sector	
-    linebuffer = zmalloc<decltype(linebuffer)> (totallines*sizeof(line_t *), PU_LEVEL, 0);
+    linebuffer = zone_malloc_ptr<decltype(linebuffer)> ( PU_LEVEL, totallines);
 
     for (i=0; i<numsectors; ++i)
     {

@@ -3,6 +3,8 @@
 
 #include <new>
 #include <cstdlib>
+#include <type_traits>
+
 #include "../src/z_zone.hpp"
 
 // todo fix me
@@ -30,6 +32,18 @@ auto zone_malloc(int tag, const std::size_t size)
 {
    auto *mem = Z_Malloc(sizeof(DataType) * size, tag, nullptr);
    return new (mem) DataType[size];
+}
+
+template<typename PtrDataType>
+auto zone_malloc_ptr(int tag)
+{
+   return zone_malloc<typename std::remove_pointer<PtrDataType>::type>(tag);
+}
+
+template<typename PtrDataType>
+auto zone_malloc_ptr(int tag, const std::size_t size)
+{
+   return zone_malloc<typename std::remove_pointer<PtrDataType>::type>(tag, size);
 }
 
 template<typename DataType>

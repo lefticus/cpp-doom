@@ -597,7 +597,7 @@ static void GenerateTextureHashTable(void)
     int key;
 
     textures_hashtable 
-            = zmalloc<decltype(textures_hashtable)>(sizeof(texture_t *) * numtextures, PU_STATIC, 0);
+            = zone_malloc_ptr<decltype(textures_hashtable)>(PU_STATIC, numtextures);
 
     memset(textures_hashtable, 0, sizeof(texture_t *) * numtextures);
 
@@ -762,7 +762,7 @@ void R_InitTextures (void)
 
     // [crispy] fill up the patch lookup table
     name[8] = 0;
-    patchlookup = zmalloc<decltype(patchlookup)>(nummappatches * sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = zone_malloc_ptr<decltype(patchlookup)>(PU_STATIC, nummappatches);
     for (i = 0, k = 0; i < numpnameslumps; i++)
     {
 	for (j = 0; j < pnameslumps[i].nummappatches; j++)
@@ -818,15 +818,15 @@ void R_InitTextures (void)
     // [crispy] pointer to (i.e. actually before) the first texture file
     texturelump = texturelumps - 1; // [crispy] gets immediately increased below
 
-    textures = zmalloc<decltype(textures)> (numtextures * sizeof(*textures), PU_STATIC, 0);
-    texturecolumnlump = zmalloc<decltype(texturecolumnlump)> (numtextures * sizeof(*texturecolumnlump), PU_STATIC, 0);
-    texturecolumnofs = zmalloc<decltype(texturecolumnofs)> (numtextures * sizeof(*texturecolumnofs), PU_STATIC, 0);
-    texturecolumnofs2 = zmalloc<decltype(texturecolumnofs2)> (numtextures * sizeof(*texturecolumnofs2), PU_STATIC, 0);
-    texturecomposite = zmalloc<decltype(texturecomposite)> (numtextures * sizeof(*texturecomposite), PU_STATIC, 0);
-    texturecompositesize = zmalloc<decltype(texturecompositesize)> (numtextures * sizeof(*texturecompositesize), PU_STATIC, 0);
-    texturewidthmask = zmalloc<decltype(texturewidthmask)> (numtextures * sizeof(*texturewidthmask), PU_STATIC, 0);
-    textureheight = zmalloc<decltype(textureheight)> (numtextures * sizeof(*textureheight), PU_STATIC, 0);
-    texturebrightmap = zmalloc<decltype(texturebrightmap)> (numtextures * sizeof(*texturebrightmap), PU_STATIC, 0);
+    textures = zone_malloc_ptr<decltype(textures)> (PU_STATIC, numtextures );
+    texturecolumnlump = zone_malloc_ptr<decltype(texturecolumnlump)> (PU_STATIC, numtextures );
+    texturecolumnofs = zone_malloc_ptr<decltype(texturecolumnofs)> (PU_STATIC, numtextures );
+    texturecolumnofs2 = zone_malloc_ptr<decltype(texturecolumnofs2)> (PU_STATIC, numtextures );
+    texturecomposite = zone_malloc_ptr<decltype(texturecomposite)> (PU_STATIC, numtextures );
+    texturecompositesize = zone_malloc_ptr<decltype(texturecompositesize)> (PU_STATIC, numtextures );
+    texturewidthmask = zone_malloc_ptr<decltype(texturewidthmask)> (PU_STATIC, numtextures );
+    textureheight = zone_malloc_ptr<decltype(textureheight)> (PU_STATIC, numtextures );
+    texturebrightmap = zone_malloc_ptr<decltype(texturebrightmap)> (PU_STATIC, numtextures );
 
     totalwidth = 0;
     
@@ -946,7 +946,7 @@ void R_InitTextures (void)
 	R_GenerateLookup (i);
     
     // Create translation table for global animation.
-    texturetranslation = zmalloc<decltype(texturetranslation)> ((numtextures+1)*sizeof(*texturetranslation), PU_STATIC, 0);
+    texturetranslation = zone_malloc_ptr<decltype(texturetranslation)> ( PU_STATIC, numtextures+1);
     
     for (i=0 ; i<numtextures ; i++)
 	texturetranslation[i] = i;
@@ -968,7 +968,7 @@ void R_InitFlats (void)
     numflats = lastflat - firstflat + 1;
 	
     // Create translation table for global animation.
-    flattranslation = zmalloc<decltype(flattranslation)> ((numflats+1)*sizeof(*flattranslation), PU_STATIC, 0);
+    flattranslation = zone_malloc_ptr<decltype(flattranslation)> (PU_STATIC, numflats+1);
     
     for (i=0 ; i<numflats ; i++)
 	flattranslation[i] = i;
@@ -990,9 +990,9 @@ void R_InitSpriteLumps (void)
     lastspritelump = W_GetNumForName (DEH_String("S_END")) - 1;
     
     numspritelumps = lastspritelump - firstspritelump + 1;
-    spritewidth = zmalloc<decltype(spritewidth)> (numspritelumps*sizeof(*spritewidth), PU_STATIC, 0);
-    spriteoffset = zmalloc<decltype(spriteoffset)> (numspritelumps*sizeof(*spriteoffset), PU_STATIC, 0);
-    spritetopoffset = zmalloc<decltype(spritetopoffset)> (numspritelumps*sizeof(*spritetopoffset), PU_STATIC, 0);
+    spritewidth = zone_malloc_ptr<decltype(spritewidth)> (PU_STATIC, numspritelumps);
+    spriteoffset = zone_malloc_ptr<decltype(spriteoffset)> (PU_STATIC, numspritelumps);
+    spritetopoffset = zone_malloc_ptr<decltype(spritetopoffset)> ( PU_STATIC, numspritelumps);
 	
     for (i=0 ; i< numspritelumps ; i++)
     {
@@ -1042,7 +1042,7 @@ static void R_InitTranMap()
 	    unsigned char playpal[256*3]; // [crispy] a palette has 768 bytes!
 	} cache;
 
-	tranmap = zmalloc<decltype(tranmap)>(256*256, PU_STATIC, 0);
+	tranmap = zone_malloc_ptr<decltype(tranmap)>( PU_STATIC, 256*256);
 	fname = M_StringJoin(configdir, "tranmap.dat", NULL);
 
 	// [crispy] open file readable
