@@ -1010,9 +1010,10 @@ void R_InitSpriteLumps (void)
 // [crispy] initialize translucency filter map
 // based in parts on the implementation from boom202s/R_DATA.C:676-787
 
+// This seems like a really bad idea
 enum {
     r, g, b
-} rgb_t;
+}; // rgb_t;
 
 static const int tran_filter_pct = 66;
 

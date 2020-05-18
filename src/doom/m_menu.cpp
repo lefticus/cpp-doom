@@ -266,7 +266,7 @@ enum
     readthis,
     quitdoom,
     main_end
-} main_e;
+}; // main_e;
 
 menuitem_t MainMenu[]=
 {
@@ -301,7 +301,7 @@ enum
     ep4,
     ep5, // [crispy] Sigil
     ep_end
-} episodes_e;
+};// episodes_e;
 
 menuitem_t EpisodeMenu[]=
 {
@@ -330,7 +330,7 @@ enum
     ex1,
     ex2,
     ex_end
-} expansions_e;
+};// expansions_e;
 
 static menuitem_t ExpansionMenu[]=
 {
@@ -359,7 +359,7 @@ enum
     violence,
     nightmare,
     newg_end
-} newgame_e;
+};// newgame_e;
 
 menuitem_t NewGameMenu[]=
 {
@@ -396,7 +396,7 @@ enum
     soundvol,
     crispness, // [crispy] Crispness menu
     opt_end
-} options_e;
+};// options_e;
 
 menuitem_t OptionsMenu[]=
 {
@@ -431,7 +431,7 @@ enum
     mouse_empty3,
     mouse_invert,
     mouse_end
-} mouse_e;
+};// mouse_e;
 
 static menuitem_t MouseMenu[]=
 {
@@ -477,7 +477,7 @@ enum
     crispness1_next,
     crispness1_prev,
     crispness1_end
-} crispness1_e;
+};// crispness1_e;
 
 static menuitem_t Crispness1Menu[]=
 {
@@ -530,7 +530,7 @@ enum
     crispness2_next,
     crispness2_prev,
     crispness2_end
-} crispness2_e;
+};// crispness2_e;
 
 static menuitem_t Crispness2Menu[]=
 {
@@ -583,7 +583,7 @@ enum
     crispness3_next,
     crispness3_prev,
     crispness3_end
-} crispness3_e;
+};// crispness3_e;
 
 static menuitem_t Crispness3Menu[]=
 {
@@ -634,7 +634,7 @@ enum
     crispness4_next,
     crispness4_prev,
     crispness4_end
-} crispness4_e;
+};// crispness4_e;
 
 
 static menuitem_t Crispness4Menu[]=
@@ -681,7 +681,7 @@ enum
 {
     rdthsempty1,
     read1_end
-} read_e;
+};// read_e;
 
 menuitem_t ReadMenu1[] =
 {
@@ -702,7 +702,7 @@ enum
 {
     rdthsempty2,
     read2_end
-} read_e2;
+};// read_e2;
 
 menuitem_t ReadMenu2[]=
 {
@@ -729,7 +729,7 @@ enum
     music_vol,
     sfx_empty2,
     sound_end
-} sound_e;
+};// sound_e;
 
 menuitem_t SoundMenu[]=
 {
@@ -763,7 +763,7 @@ enum
     load7, // [crispy] up to 8 savegames
     load8, // [crispy] up to 8 savegames
     load_end
-} load_e;
+};// load_e;
 
 menuitem_t LoadMenu[]=
 {

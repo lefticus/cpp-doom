@@ -26,6 +26,13 @@ auto zone_malloc(int tag)
 }
 
 template<typename DataType>
+auto zone_malloc(int tag, const std::size_t size)
+{
+   auto *mem = Z_Malloc(sizeof(DataType) * size, tag, nullptr);
+   return new (mem) DataType[size];
+}
+
+template<typename DataType>
 auto zmalloc(int size, int tag, void *ptr)
 {
   return static_cast<DataType>(Z_Malloc(size, tag, ptr));

@@ -1702,7 +1702,7 @@ enum
     hudcolor_health,
     hudcolor_frags,
     hudcolor_armor
-} hudcolor_t;
+}; // hudcolor_t;
 
 // [crispy] return ammo/health/armor widget color
 static byte* ST_WidgetColor(int i)

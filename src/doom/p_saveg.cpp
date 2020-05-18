@@ -241,22 +241,6 @@ static void saveg_write_mapthing_t(mapthing_t *str)
 }
 
 //
-// actionf_t
-// 
-
-static void saveg_read_actionf_t(actionf_t *str)
-{
-    // actionf_p1 acp1;
-    *str = saveg_readp();
-}
-
-static void saveg_write_actionf_t(actionf_t *str)
-{
-    // actionf_p1 acp1;
-  saveg_writep(static_cast<const void *>(*str));
-}
-
-//
 // think_t
 //
 static void saveg_read_think_t(think_t *str)
@@ -1789,7 +1773,7 @@ enum
     tc_glow,
     tc_endspecials
 
-} specials_e;	
+};// specials_e;	
 
 
 
