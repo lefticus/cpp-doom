@@ -90,7 +90,7 @@ struct line_s;
 //  updated.
 typedef struct
 {
-    thinker_t		thinker;	// not used for anything
+    int                 thinker;
     fixed_t		x;
     fixed_t		y;
     fixed_t		z;
