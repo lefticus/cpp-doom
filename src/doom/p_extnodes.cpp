@@ -317,7 +317,9 @@ void P_LoadNodes_ZDBSP (int lump, boolean compressed)
     else
     {
 	newvertarray = zmalloc<decltype(newvertarray)>((orgVerts + newVerts) * sizeof(vertex_t), PU_LEVEL, 0);
-	memcpy(newvertarray, vertexes, orgVerts * sizeof(vertex_t));
+	for(int i =0; i<orgVerts; ++i) {
+           newvertarray[i] = vertexes[i];
+        }
 	memset(newvertarray + orgVerts, 0, newVerts * sizeof(vertex_t));
     }
 

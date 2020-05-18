@@ -300,8 +300,7 @@ void StatCopy(const wbstartstruct_t *stats)
 {
     if (M_ParmExists("-statdump") && num_captured_stats < MAX_CAPTURES)
     {
-        memcpy(&captured_stats[num_captured_stats], stats,
-               sizeof(wbstartstruct_t));
+        captured_stats[num_captured_stats]= *stats;
         ++num_captured_stats;
     }
 }

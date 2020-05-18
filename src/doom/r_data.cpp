@@ -510,7 +510,7 @@ void R_GenerateLookup (int texnum)
 	    // [crispy] fix absurd texture name in error message
 	    char namet[9];
 	    namet[8] = 0;
-	    memcpy (namet, texture->name, 8);
+	    strncpy(namet, texture->name, 8);
 	    printf ("R_GenerateLookup: column without a patch (%s)\n",
 		    namet);
 	    // [crispy] do not return yet
@@ -888,7 +888,7 @@ void R_InitTextures (void)
 	texture->height = SHORT(mtexture->height);
 	texture->patchcount = SHORT(mtexture->patchcount);
 	
-	memcpy (texture->name, mtexture->name, sizeof(texture->name));
+	strncpy(texture->name, mtexture->name, 8);
 	mpatch = &mtexture->patches[0];
 	patch = &texture->patches[0];
 
@@ -910,7 +910,7 @@ void R_InitTextures (void)
 	    {
 		char	texturename[9];
 		texturename[8] = '\0';
-		memcpy (texturename, texture->name, 8);
+		strncpy(texturename, texture->name, 8);
 		// [crispy] make non-fatal
 		fprintf (stderr, "R_InitTextures: Missing patch in texture %s\n",
 			 texturename);
@@ -1101,7 +1101,7 @@ static void R_InitTranMap()
 		// [crispy] set filter percents
 		cache.pct = tran_filter_pct;
 		// [crispy] set base palette
-		memcpy(cache.playpal, playpal, sizeof(cache.playpal));
+		*cache.playpal = *playpal;
 		// [crispy] go to start of file
 		fseek(cachefp, 0, SEEK_SET);
 		// [crispy] write struct cache
@@ -1285,7 +1285,7 @@ int R_FlatNumForName(const char *name)
     if (i == -1)
     {
 	namet[8] = 0;
-	memcpy (namet, name,8);
+	strncpy(namet, name,8);
 	// [crispy] make non-fatal
 	fprintf (stderr, "R_FlatNumForName: %s not found\n", namet);
 	// [crispy] since there is no "No Flat" marker,
@@ -1345,7 +1345,7 @@ int R_TextureNumForName(const char *name)
 	// [crispy] fix absurd texture name in error message
 	char	namet[9];
 	namet[8] = '\0';
-	memcpy (namet, name, 8);
+	strncpy(namet, name, 8);
 	// [crispy] make non-fatal
 	fprintf (stderr, "R_TextureNumForName: %s not found\n",
 		 namet);

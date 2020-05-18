@@ -1155,7 +1155,7 @@ void G_Ticker (void)
 	{ 
 	    cmd = &players[i].cmd; 
 
-	    memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+	    *cmd = netcmds[i];
 
 	    if (demoplayback) 
 		G_ReadDemoTiccmd (cmd); 
@@ -1344,7 +1344,7 @@ void G_PlayerReborn (int player)
     int		itemcount;
     int		secretcount; 
 	 
-    memcpy (frags,players[player].frags,sizeof(frags)); 
+    *frags = *players[player].frags;
     killcount = players[player].killcount; 
     itemcount = players[player].itemcount; 
     secretcount = players[player].secretcount; 
@@ -1352,7 +1352,7 @@ void G_PlayerReborn (int player)
     p = &players[player]; 
     memset (p, 0, sizeof(*p)); 
  
-    memcpy (players[player].frags, frags, sizeof(players[player].frags)); 
+    *players[player].frags = *frags;
     players[player].killcount = killcount; 
     players[player].itemcount = itemcount; 
     players[player].secretcount = secretcount; 
@@ -1850,8 +1850,7 @@ void G_DoCompleted (void)
 	wminfo.plyr[i].sitems = players[i].itemcount; 
 	wminfo.plyr[i].ssecret = players[i].secretcount; 
 	wminfo.plyr[i].stime = leveltime; 
-	memcpy (wminfo.plyr[i].frags, players[i].frags 
-		, sizeof(wminfo.plyr[i].frags)); 
+	*wminfo.plyr[i].frags = *players[i].frags; 
     } 
  
     // [crispy] CPhipps - total time for all completed levels

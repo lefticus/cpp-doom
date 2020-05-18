@@ -50,13 +50,14 @@ wipe_shittyColMajorXform
     int		y;
     dpixel_t*	dest;
 
-    dest = (dpixel_t*) Z_Malloc(width*height*sizeof(*dest), PU_STATIC, 0);
+    dest = zone_malloc_ptr<dpixel_t>(PU_STATIC, width*height);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
 	    dest[x*height+y] = array[y*width+x];
 
-    memcpy(array, dest, width*height*sizeof(*dest));
+    for(x=0;x<width*height;x++)
+       array[x] = dest[x];
 
     Z_Free(dest);
 
@@ -68,7 +69,8 @@ wipe_initColorXForm
   int	height,
   int	ticks )
 {
-    memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
+    for(int x=0;x<width*height;x++)
+       wipe_scr[x] = wipe_scr_start[x];
     return 0;
 }
 
@@ -139,7 +141,8 @@ wipe_initMelt
     int i, r;
     
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
+    for(int x=0;x<width*height;x++)
+       wipe_scr[x] = wipe_scr_start[x];
     
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
@@ -148,7 +151,7 @@ wipe_initMelt
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
+    y = zone_malloc<int>(PU_STATIC, width);
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
