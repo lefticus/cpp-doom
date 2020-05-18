@@ -45,6 +45,7 @@
 #include "v_video.hpp"
 
 #include "../../utils/lump.hpp"
+#include "../../utils/memory.hpp"
 #include "st_stuff.hpp" // [crispy] ST_DrawDemoTimer()
 #include "wi_stuff.hpp"
 
@@ -1901,16 +1902,14 @@ void WI_loadData(void)
     if (gamemode == commercial)
     {
 	NUMCMAPS = (crispy->havemap33) ? 33 : 32;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, NULL);
+	lnames = zone_malloc<patch_t*>(PU_STATIC, NUMCMAPS);
 	num_lnames = NUMCMAPS;
     }
     else
     {
 	// [crispy] support E1M10 "Sewers"
 	int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * nummaps,
-				       PU_STATIC, NULL);
+	lnames = zone_malloc<patch_t*>(PU_STATIC, nummaps);
 	num_lnames = nummaps;
     }
 

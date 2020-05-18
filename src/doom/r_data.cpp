@@ -1158,7 +1158,7 @@ void R_InitColormaps (void)
 
 	if (!colormaps)
 	{
-		colormaps = (lighttable_t*) Z_Malloc((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
+           colormaps = zone_malloc<lighttable_t>(PU_STATIC, (NUMCOLORMAPS + 1) * 256);
 	}
 
 	if (crispy->truecolor)
