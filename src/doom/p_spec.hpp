@@ -133,7 +133,8 @@ struct light_t : public thinker_t {
 
 struct fireflicker_t : public light_t
 {
-    int		count;
+    void action() override;
+    int	 count;
 };
 
 struct lightflash_t : public light_t

@@ -37,9 +37,8 @@
 //
 // T_FireFlicker
 //
-void T_FireFlicker (thinker_t *thinker)
-{
-   auto flick = static_cast<fireflicker_t*>(thinker);
+void fireflicker_t::action() {
+   auto flick = this;
    int	amount;
 	
     if (--flick->count)
@@ -72,7 +71,6 @@ void P_SpawnFireFlicker (sector_t*	sector)
 
     P_AddThinker (flick);
 
-    flick->function = T_FireFlicker;
     flick->sector = sector;
     flick->maxlight = sector->lightlevel;
     flick->minlight = P_FindMinSurroundingLight(sector,sector->lightlevel)+16;

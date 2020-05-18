@@ -118,26 +118,21 @@ static void P_ReadTotalLevelTimes (const char *key)
 
 // T_FireFlicker()
 
-extern void T_FireFlicker (thinker_t *thinker);
-
 static void P_WriteFireFlicker (const char *key)
 {
 	thinker_t* th;
 
 	for (th = thinkercap.next; th != &thinkercap; th = th->next)
 	{
-		if (th->function == T_FireFlicker)
-		{
-			fireflicker_t *flick = (fireflicker_t *)th;
-
-			M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
-			           key,
-			           (int)(flick->sector - sectors),
-			           (int)flick->count,
-			           (int)flick->maxlight,
-			           (int)flick->minlight);
-			fputs(line, save_stream);
-		}
+        	if (fireflicker_t *flick = dynamic_cast<fireflicker_t*>( th )) {
+              		M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
+                                   key,
+                                   (int)(flick->sector - sectors),
+                                   (int)flick->count,
+                                   (int)flick->maxlight,
+                                   (int)flick->minlight);
+                        fputs(line, save_stream);
+                }
 	}
 }
 
@@ -153,16 +148,12 @@ static void P_ReadFireFlicker (const char *key)
 	           &minlight) == 5 &&
 	    !strncmp(string, key, MAX_STRING_LEN))
 	{
-		fireflicker_t *flick;
-
-		flick = zmalloc<decltype(flick)>(sizeof(*flick), PU_LEVEL, NULL);
+		auto flick = zone_malloc<fireflicker_t>(PU_LEVEL);
 
 		flick->sector = &sectors[sector];
 		flick->count = count;
 		flick->maxlight = maxlight;
 		flick->minlight = minlight;
-
-		flick->function = T_FireFlicker;
 
 		P_AddThinker(flick);
 	}
