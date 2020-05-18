@@ -917,9 +917,9 @@ void R_InitTextures (void)
 		patch->patch = 0;
 	    }
 	}		
-	texturecolumnlump[i] = zmalloc<short *> (texture->width*sizeof(**texturecolumnlump), PU_STATIC,0);
-	texturecolumnofs[i] = zmalloc<unsigned *> (texture->width*sizeof(**texturecolumnofs), PU_STATIC,0);
-	texturecolumnofs2[i] = zmalloc<unsigned *> (texture->width*sizeof(**texturecolumnofs2), PU_STATIC,0);
+	texturecolumnlump[i] = zone_malloc<short> (PU_STATIC,texture->width);
+	texturecolumnofs[i] = zone_malloc<unsigned> (PU_STATIC,texture->width);
+	texturecolumnofs2[i] = zone_malloc<unsigned> (PU_STATIC,texture->width);
 
 	j = 1;
 	while (j*2 <= texture->width)
