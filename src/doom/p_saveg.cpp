@@ -1728,7 +1728,7 @@ void P_UnArchiveThinkers (void)
 			
 	  case tc_mobj:
 	    saveg_read_pad();
-	    mobj = zmalloc<decltype(mobj)> (sizeof(*mobj), PU_LEVEL, NULL);
+	    mobj = zone_malloc<mobj_t>( PU_LEVEL);
             saveg_read_mobj_t(mobj);
 
 	    // [crispy] restore mobj->target and mobj->tracer fields
@@ -1928,7 +1928,7 @@ void P_UnArchiveSpecials (void)
 			
 	  case tc_ceiling:
 	    saveg_read_pad();
-	    ceiling = zmalloc<decltype(ceiling)> (sizeof(*ceiling), PU_LEVEL, NULL);
+	    ceiling = zone_malloc<ceiling_t>(PU_LEVEL);
             saveg_read_ceiling_t(ceiling);
 	    ceiling->sector->specialdata = ceiling;
 
@@ -1941,7 +1941,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_door:
 	    saveg_read_pad();
-	    door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVEL, NULL);
+	    door = zone_malloc<vldoor_t>(PU_LEVEL);
             saveg_read_vldoor_t(door);
 	    door->sector->specialdata = door;
 	    door->function = T_VerticalDoor;
@@ -1950,7 +1950,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_floor:
 	    saveg_read_pad();
-	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVEL, NULL);
+	    floor = zone_malloc<floormove_t>(PU_LEVEL);
             saveg_read_floormove_t(floor);
 	    floor->sector->specialdata = floor;
 	    floor->function = T_MoveFloor;
@@ -1959,7 +1959,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_plat:
 	    saveg_read_pad();
-	    plat = zmalloc<decltype(plat)> (sizeof(*plat), PU_LEVEL, NULL);
+	    plat = zone_malloc<plat_t>(PU_LEVEL);
             saveg_read_plat_t(plat);
 	    plat->sector->specialdata = plat;
 
@@ -1972,7 +1972,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_flash:
 	    saveg_read_pad();
-	    flash = zmalloc<decltype(flash)> (sizeof(*flash), PU_LEVEL, NULL);
+	    flash = zone_malloc<lightflash_t>(PU_LEVEL);
             saveg_read_lightflash_t(flash);
 	    flash->function = T_LightFlash;
 	    P_AddThinker (flash);
@@ -1980,7 +1980,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_strobe:
 	    saveg_read_pad();
-	    strobe = zmalloc<decltype(strobe)> (sizeof(*strobe), PU_LEVEL, NULL);
+	    strobe = zone_malloc<strobe_t>(PU_LEVEL);
             saveg_read_strobe_t(strobe);
 	    strobe->function = T_StrobeFlash;
 	    P_AddThinker (strobe);
@@ -1988,7 +1988,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_glow:
 	    saveg_read_pad();
-	    glow = zmalloc<decltype(glow)> (sizeof(*glow), PU_LEVEL, NULL);
+	    glow = zone_malloc<glow_t>(PU_LEVEL);
             saveg_read_glow_t(glow);
 	    glow->function = T_Glow;
 	    P_AddThinker (glow);

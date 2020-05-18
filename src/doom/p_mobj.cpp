@@ -629,7 +629,7 @@ P_SpawnMobjSafe
     state_t*	st;
     mobjinfo_t*	info;
 	
-    mobj = zmalloc<decltype(mobj)> (sizeof(*mobj), PU_LEVEL, NULL);
+    mobj = zone_malloc<mobj_t>(PU_LEVEL);
     memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 	

@@ -68,7 +68,7 @@ void P_SpawnFireFlicker (sector_t*	sector)
     // Nothing special about it during gameplay.
     sector->special = 0; 
 	
-    flick = zmalloc<decltype(flick)> ( sizeof(*flick), PU_LEVSPEC, 0);
+    flick = zone_malloc<fireflicker_t>(PU_LEVSPEC);
 
     P_AddThinker (flick);
 
@@ -124,7 +124,7 @@ void P_SpawnLightFlash (sector_t*	sector)
     // nothing special about it during gameplay
     sector->special = 0;	
 	
-    flash = zmalloc<decltype(flash)> ( sizeof(*flash), PU_LEVSPEC, 0);
+    flash = zone_malloc<lightflash_t>(PU_LEVSPEC);
 
     P_AddThinker (flash);
 
@@ -182,7 +182,7 @@ P_SpawnStrobeFlash
 {
     strobe_t*	flash;
 	
-    flash = zmalloc<decltype(flash)> ( sizeof(*flash), PU_LEVSPEC, 0);
+    flash = zone_malloc<strobe_t>(PU_LEVSPEC);
 
     P_AddThinker (flash);
 
@@ -340,7 +340,7 @@ void P_SpawnGlowingLight(sector_t*	sector)
 {
     glow_t*	g;
 	
-    g = zmalloc<decltype(g)>( sizeof(*g), PU_LEVSPEC, 0);
+    g = zone_malloc<glow_t>(PU_LEVSPEC);
 
     P_AddThinker(g);
 

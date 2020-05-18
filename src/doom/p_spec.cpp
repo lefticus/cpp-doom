@@ -1513,7 +1513,7 @@ int EV_DoDonut(line_t*	line)
             }
 
 	    //	Spawn rising slime
-	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = zone_malloc<floormove_t>(PU_LEVSPEC);
 	    P_AddThinker (floor);
 	    s2->specialdata = floor;
 	    floor->function = T_MoveFloor;
@@ -1527,7 +1527,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->floordestheight = s3_floorheight;
 	    
 	    //	Spawn lowering donut-hole
-	    floor = zmalloc<decltype(floor)> (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = zone_malloc<floormove_t>(PU_LEVSPEC);
 	    P_AddThinker (floor);
 	    s1->specialdata = floor;
 	    floor->function = T_MoveFloor;

@@ -282,7 +282,7 @@ EV_DoDoor
 	
 	// new door thinker
 	rtn = 1;
-	door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
+	door = zone_malloc<vldoor_t>(PU_LEVSPEC);
 	P_AddThinker (door);
 	sec->specialdata = door;
 
@@ -511,7 +511,7 @@ EV_VerticalDoor
 	
     
     // new door thinker
-    door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
+    door = zone_malloc<vldoor_t>(PU_LEVSPEC);
     P_AddThinker (door);
     sec->specialdata = door;
     door->function = T_VerticalDoor;
@@ -561,7 +561,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*	door;
 	
-    door = zmalloc<decltype(door)> ( sizeof(*door), PU_LEVSPEC, 0);
+    door = zone_malloc<vldoor_t>(PU_LEVSPEC);
 
     P_AddThinker (door);
 
@@ -586,7 +586,7 @@ P_SpawnDoorRaiseIn5Mins
 {
     vldoor_t*	door;
 	
-    door = zmalloc<decltype(door)> ( sizeof(*door), PU_LEVSPEC, 0);
+    door = zone_malloc<vldoor_t>(PU_LEVSPEC);
     
     P_AddThinker (door);
 
@@ -797,7 +797,7 @@ EV_SlidingDoor
     // Init sliding door vars
     if (!door)
     {
-	door = zmalloc<decltype(door)> (sizeof(*door), PU_LEVSPEC, 0);
+        door = zone_malloc<vldoor_t>(PU_LEVSPEC);
 	P_AddThinker (door);
 	sec->specialdata = door;
 		
