@@ -255,7 +255,7 @@ void P_LoadNodes_ZDBSP (int lump, boolean compressed)
 	// first estimate for compression rate:
 	// output buffer size == 2.5 * input size
 	outlen = 2.5 * len;
-	output = zmalloc<decltype(output)>(outlen, PU_STATIC, 0);
+	output = zone_malloc<byte>(PU_STATIC, outlen);
 
 	// initialize stream state for decompression
 	memset(&zstream, 0, sizeof(*zstream));

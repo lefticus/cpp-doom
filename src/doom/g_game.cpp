@@ -2504,7 +2504,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
     
-    new_demobuffer = zmalloc<decltype(new_demobuffer)>(new_length, PU_STATIC, 0);
+    new_demobuffer = zone_malloc_ptr<decltype(new_demobuffer)>(PU_STATIC, new_length);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
@@ -2595,7 +2595,7 @@ void G_RecordDemo (const char *name)
 
     usergame = false;
     demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
-    demoname = zmalloc<decltype(demoname)>(demoname_size, PU_STATIC, NULL);
+    demoname = zone_malloc<char>(PU_STATIC, demoname_size);
     M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
     // [crispy] prevent overriding demos by adding a file name suffix
@@ -2618,7 +2618,7 @@ void G_RecordDemo (const char *name)
     i = M_CheckParmWithArgs("-maxdemo", 1);
     if (i)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = zmalloc<decltype(demobuffer)> (maxsize,PU_STATIC,NULL);
+    demobuffer = zone_malloc<byte>(PU_STATIC, maxsize);
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
