@@ -45,7 +45,7 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
 
     // Create a new stdc_wad_file_t to hold the file handle.
 
-    result = zmalloc<decltype(result)>(sizeof(stdc_wad_file_t), PU_STATIC, 0);
+    result = zone_malloc<stdc_wad_file_t>(PU_STATIC);
     result->wad.file_class = &stdc_wad_file;
     result->wad.mapped = NULL;
     result->wad.length = M_FileLength(fstream);

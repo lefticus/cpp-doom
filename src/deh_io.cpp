@@ -69,14 +69,12 @@ struct deh_context_s
 
 static deh_context_t *DEH_NewContext(void)
 {
-    deh_context_t *context;
-
-    context = zmalloc<decltype(context)>(sizeof(*context), PU_STATIC, NULL);
+    auto context = zone_malloc<deh_context_t>(PU_STATIC);
 
     // Initial read buffer size of 128 bytes
 
     context->readbuffer_size = 128;
-    context->readbuffer = zmalloc<decltype(context->readbuffer)>(context->readbuffer_size, PU_STATIC, NULL);
+    context->readbuffer = zone_malloc<char>(PU_STATIC, context->readbuffer_size);
     context->linenum = 0;
     context->last_was_newline = true;
 
@@ -214,7 +212,7 @@ static void IncreaseReadBuffer(deh_context_t *context)
     int newbuffer_size;
 
     newbuffer_size = context->readbuffer_size * 2;
-    newbuffer = zmalloc<decltype(newbuffer)>(newbuffer_size, PU_STATIC, NULL);
+    newbuffer = zone_malloc<char>(PU_STATIC, newbuffer_size);
 
     memcpy(newbuffer, context->readbuffer, context->readbuffer_size);
 
