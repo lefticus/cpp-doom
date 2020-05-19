@@ -34,6 +34,15 @@ auto zone_malloc(int tag, const std::size_t size)
    return new (mem) DataType[size];
 }
 
+// PTR is typically the pointer to the pointer that stores the Z_Malloc'd value
+// and is used for statistics gathering, but it can be anything really.
+template<typename DataType, typename PtrType>
+auto zone_malloc(int tag, const std::size_t size, PtrType ptr)
+{
+   auto *mem = Z_Malloc(sizeof(DataType) * size, tag, static_cast<void*>(ptr));
+   return new (mem) DataType[size];
+}
+
 template<typename PtrDataType>
 auto zone_malloc_ptr(int tag)
 {

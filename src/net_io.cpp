@@ -36,7 +36,7 @@ net_addr_t net_broadcast_addr;
 
 net_context_t *NET_NewContext(void)
 {
-    auto *context = zmalloc<net_context_t*>(sizeof(net_context_t), PU_STATIC, 0);
+    auto *context = zone_malloc<net_context_t>(PU_STATIC);
     context->num_modules = 0;
 
     return context;

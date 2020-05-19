@@ -728,7 +728,7 @@ boolean P_LoadBlockMap (int lump)
 	
     // [crispy] remove BLOCKMAP limit
     // adapted from boom202s/P_SETUP.C:1025-1076
-    wadblockmaplump = zmalloc<decltype(wadblockmaplump)>(lumplen, PU_LEVEL, NULL);
+    wadblockmaplump = zone_malloc<short>(PU_LEVEL, lumplen/ sizeof(short));
     W_ReadLump(lump, wadblockmaplump);
     blockmaplump = zone_malloc_ptr<decltype(blockmaplump)>(PU_LEVEL, count );
     blockmap = blockmaplump + 4;
@@ -1016,7 +1016,7 @@ static void P_LoadReject(int lumpnum)
     }
     else
     {
-        rejectmatrix = zmalloc<decltype(rejectmatrix)>(minlength, PU_LEVEL, &rejectmatrix);
+        rejectmatrix = zone_malloc<byte>(PU_LEVEL, minlength, &rejectmatrix);
         W_ReadLump(lumpnum, rejectmatrix);
 
         PadRejectArray(rejectmatrix + lumplen, minlength - lumplen);

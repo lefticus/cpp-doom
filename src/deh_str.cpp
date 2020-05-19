@@ -110,8 +110,7 @@ static void InitHashTable(void)
     
     hash_table_entries = 0;
     hash_table_length = 16;
-    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-                          PU_STATIC, NULL);
+    hash_table = zone_malloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 }
 
@@ -131,8 +130,7 @@ static void IncreaseHashtable(void)
     // double the size 
 
     hash_table_length *= 2;
-    hash_table = zmalloc<decltype(hash_table)>(sizeof(deh_substitution_t *) * hash_table_length,
-                          PU_STATIC, NULL);
+    hash_table = zone_malloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
     memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 
     // go through the old table and insert all the old entries
@@ -192,21 +190,21 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
         Z_Free(sub->to_text);
 
         len = strlen(to_text) + 1;
-        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->to_text = zone_malloc<char>(PU_STATIC, len);
         memcpy(sub->to_text, to_text, len);
     }
     else
     {
         // We need to allocate a new substitution.
-        sub = zmalloc<decltype(sub)>(sizeof(*sub), PU_STATIC, 0);
+        sub = zone_malloc<deh_substitution_t>(PU_STATIC);
 
         // We need to create our own duplicates of the provided strings.
         len = strlen(from_text) + 1;
-        sub->from_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->from_text = zone_malloc<char>(PU_STATIC, len);
         memcpy(sub->from_text, from_text, len);
 
         len = strlen(to_text) + 1;
-        sub->to_text = zmalloc<char *>(len, PU_STATIC, NULL);
+        sub->to_text = zone_malloc<char>(PU_STATIC, len);
         memcpy(sub->to_text, to_text, len);
 
         DEH_AddToHashtable(sub);
