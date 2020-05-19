@@ -66,8 +66,9 @@ char *P_SaveGameFile(int slot)
     if (filename == NULL)
     {
         filename_size = strlen(savegamedir) + 32;
-        // possible use a shared pointer?
-        filename = static_cast<char *>(malloc(filename_size));
+        // Flipping this for a unique_ptr didn't work.
+        // FIXME: This leaks memory, but so didi the original code.
+        filename = new char[filename_size];
     }
 
     DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
