@@ -105,9 +105,7 @@ typedef struct
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
 
-typedef struct texture_s texture_t;
-
-struct texture_s
+struct texture_t
 {
     // Keep name for switch changing, etc.
     char	name[8];		
@@ -125,7 +123,7 @@ struct texture_s
     // All the patches[patchcount]
     //  are drawn back to front into the cached texture.
     short	patchcount;
-    texpatch_t	patches[1];		
+    texpatch_t	*patches;
 };
 
 
@@ -880,9 +878,9 @@ void R_InitTextures (void)
 	
 	mtexture = (maptexture_t *) ( (byte *)maptex + offset);
 
-	texture = textures[i] = zmalloc<decltype(texture)>(sizeof(texture_t)
-		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1),
-		      PU_STATIC, 0);
+	// FIXME Where are the frees?
+	texture = textures[i] = zone_malloc<texture_t>(PU_STATIC);
+	texture->patches = zone_malloc<texpatch_t>(PU_STATIC, SHORT(mtexture->patchcount));
 	
 	texture->width = SHORT(mtexture->width);
 	texture->height = SHORT(mtexture->height);
