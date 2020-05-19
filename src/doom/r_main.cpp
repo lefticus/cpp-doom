@@ -696,23 +696,23 @@ void R_InitLightTables (void)
     {
 	for (i = 0; i < LIGHTLEVELS; i++)
 	{
-		free(scalelight[i]);
+		delete [] scalelight[i];
 	}
-	free(scalelight);
+	delete [] scalelight;
     }
 
     if (scalelightfixed)
     {
-	free(scalelightfixed);
+	delete [] scalelightfixed;
     }
 
     if (zlight)
     {
 	for (i = 0; i < LIGHTLEVELS; i++)
 	{
-		free(zlight[i]);
+		delete [] zlight[i];
 	}
-	free(zlight);
+	delete [] zlight;
     }
 
    // [crispy] smooth diminishing lighting
@@ -737,16 +737,15 @@ void R_InitLightTables (void)
 	LIGHTZSHIFT = 20;
     }
 
-    scalelight = static_cast<lighttable_t ***>(malloc(LIGHTLEVELS * sizeof(*scalelight)));
-    scalelightfixed = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(*scalelightfixed)));
-    zlight = static_cast<lighttable_t ***>(malloc(LIGHTLEVELS * sizeof(*zlight)));
+    scalelight = new lighttable_t**[LIGHTLEVELS];
+    scalelightfixed = new lighttable_t*[MAXLIGHTSCALE];
+    zlight = new lighttable_t**[LIGHTLEVELS];
 
     // Calculate the light levels to use
     //  for each level / distance combination.
     for (i=0 ; i< LIGHTLEVELS ; i++)
     {
-	zlight[i] =
-          static_cast<lighttable_t **>(malloc(MAXLIGHTZ * sizeof(**zlight)));
+        zlight[i] = new lighttable_t*[MAXLIGHTZ];
 
 	startmap = ((LIGHTLEVELS-LIGHTBRIGHT-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 	for (j=0 ; j<MAXLIGHTZ ; j++)
@@ -894,7 +893,7 @@ void R_ExecuteSetViewSize (void)
     //  for each level / scale combination.
     for (i=0 ; i< LIGHTLEVELS ; i++)
     {
-	scalelight[i] = static_cast<lighttable_t **>(malloc(MAXLIGHTSCALE * sizeof(**scalelight)));
+       scalelight[i] = new lighttable_t*[MAXLIGHTSCALE];
 
 	startmap = ((LIGHTLEVELS-LIGHTBRIGHT-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 	for (j=0 ; j<MAXLIGHTSCALE ; j++)
