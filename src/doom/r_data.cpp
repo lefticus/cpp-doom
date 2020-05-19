@@ -420,8 +420,8 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *) Z_Malloc(texture->width, PU_STATIC, &patchcount);
-    postcount = (byte *) Z_Malloc(texture->width, PU_STATIC, &postcount);
+    patchcount = zmalloc<byte*>(texture->width, PU_STATIC, &patchcount);
+    postcount = zmalloc<byte*>(texture->width, PU_STATIC, &postcount);
     memset (patchcount, 0, texture->width);
     memset (postcount, 0, texture->width);
     patch = texture->patches;
@@ -1384,7 +1384,7 @@ void R_PrecacheLevel (void)
 	return;
     
     // Precache flats.
-    flatpresent = zmalloc<decltype(flatpresent)>(numflats, PU_STATIC, NULL);
+    flatpresent = zone_malloc<char>(PU_STATIC, numflats);
     memset (flatpresent,0,numflats);	
 
     for (i=0 ; i<numsectors ; i++)
@@ -1408,7 +1408,7 @@ void R_PrecacheLevel (void)
     Z_Free(flatpresent);
     
     // Precache textures.
-    texturepresent = zmalloc<decltype(texturepresent)>(numtextures, PU_STATIC, NULL);
+    texturepresent = zone_malloc<char>(PU_STATIC, numtextures);
     memset (texturepresent,0, numtextures);
 	
     for (i=0 ; i<numsides ; i++)
@@ -1448,7 +1448,7 @@ void R_PrecacheLevel (void)
     Z_Free(texturepresent);
     
     // Precache sprites.
-    spritepresent = zmalloc<decltype(spritepresent)>(numsprites, PU_STATIC, NULL);
+    spritepresent = zone_malloc<char>(PU_STATIC, numsprites);
     memset (spritepresent,0, numsprites);
 	
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)

@@ -29,7 +29,7 @@ int	leveltime;
 
 //
 // THINKERS
-// All thinkers should be allocated by Z_Malloc
+// All thinkers should be allocated by zone_malloc
 // so they can be operated on uniformly.
 // The actual structures will vary in size,
 // but the first element must be thinker_t.
