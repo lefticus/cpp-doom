@@ -925,7 +925,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = zmalloc<decltype(pcx)> (width*height*2+1000, PU_STATIC, NULL);
+    pcx = (pcx_t*) malloc(width*height*2+1000);
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -967,7 +967,7 @@ void WritePCXfile(char *filename, pixel_t *data,
     length = pack - (byte *)pcx;
     M_WriteFile (filename, pcx, length);
 
-    Z_Free (pcx);
+    free (pcx);
 }
 
 #ifdef HAVE_LIBPNG
