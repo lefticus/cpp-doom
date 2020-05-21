@@ -1,0 +1,19 @@
+Every use of:
+
+zmalloc all gone src/doom grep zmalloc *
+Z_Malloc all gone
+malloc  all gone from src/doom grep malloc * | grep -v zone_malloc
+
+ and all variants of free
+memcpy
+memset
+mommove
+any c-style cast" "-Wold-style-cast" in `/githug/cpp-doom/CMakeLists.txt 
+
+remove dynamic_Cast from p_extsaveg.cpp
+
+export CC=/usr/bin/clang-10 
+export CXX=/usr/bin/clang++-10
+
+( cd ~/github/cpp-doom/build/ ; make c++-doom -j 4 ) 
+( cd ~/github/cpp-doom/build/ ; ~/github/cpp-doom/build/src/c++-doom )
