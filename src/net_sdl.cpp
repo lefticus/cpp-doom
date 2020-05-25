@@ -59,7 +59,7 @@ static void NET_SDL_InitAddrTable(void)
 {
     addr_table_size = 16;
 
-    addr_table = zone_malloc_ptr<decltype(addr_table)>(PU_STATIC, addr_table_size);
+    addr_table = zone_malloc<addrpair_t*>(PU_STATIC, addr_table_size);
     memset(addr_table, 0, sizeof(addrpair_t *) * addr_table_size);
 }
 
@@ -113,7 +113,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         // the existing table in.  replace the old table.
 
         new_addr_table_size = addr_table_size * 2;
-        new_addr_table = zone_malloc_ptr<decltype(new_addr_table)>(PU_STATIC, new_addr_table_size);
+        new_addr_table = zone_malloc<addrpair_t*>(PU_STATIC, new_addr_table_size);
         memset(new_addr_table, 0, sizeof(addrpair_t *) * new_addr_table_size);
         memcpy(new_addr_table, addr_table, 
                sizeof(addrpair_t *) * addr_table_size);
@@ -124,7 +124,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
     // Add a new entry
     
-    new_entry = zone_malloc_ptr<decltype(new_entry)>(PU_STATIC);
+    new_entry = zone_malloc<addrpair_t>(PU_STATIC);
 
     new_entry->sdl_addr = *addr;
     new_entry->net_addr.refcount = 0;

@@ -43,16 +43,4 @@ auto zone_malloc(int tag, const std::size_t size, PtrType ptr)
    return new (mem) DataType[size];
 }
 
-template<typename PtrDataType>
-auto zone_malloc_ptr(int tag)
-{
-   return zone_malloc<typename std::remove_pointer<PtrDataType>::type>(tag);
-}
-
-template<typename PtrDataType>
-auto zone_malloc_ptr(int tag, const std::size_t size)
-{
-   return zone_malloc<typename std::remove_pointer<PtrDataType>::type>(tag, size);
-}
-
 #endif // CRISPY_DOOM_MEMORY_HPP

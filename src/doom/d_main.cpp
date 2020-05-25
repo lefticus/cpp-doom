@@ -806,7 +806,7 @@ static const char *GetGameName(const char *gamename)
             // We also need to cut off spaces to get the basic name
 
             const auto newgamename_size = strlen(deh_sub) + 10;
-            auto *newgamename = zone_malloc_ptr<char *>(PU_STATIC, newgamename_size);
+            auto *newgamename = zone_malloc<char>(PU_STATIC, newgamename_size);
             version = G_VanillaVersionCode();
             M_snprintf(newgamename, newgamename_size, deh_sub,
                        version / 100, version % 100);

@@ -147,7 +147,7 @@ static void InitSpriteList(void)
     if (sprite_frames == NULL)
     {
         sprite_frames_alloced = 128;
-        sprite_frames = zone_malloc_ptr<decltype(sprite_frames)>(PU_STATIC, sprite_frames_alloced);
+        sprite_frames = zone_malloc<sprite_frame_t>(PU_STATIC, sprite_frames_alloced);
     }
 
     num_sprite_frames = 0;
@@ -205,7 +205,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
     {
         sprite_frame_t *newframes;
 
-        newframes = zone_malloc_ptr<decltype(newframes)>(PU_STATIC, sprite_frames_alloced * 2);
+        newframes = zone_malloc<sprite_frame_t>(PU_STATIC, sprite_frames_alloced * 2);
         memcpy(newframes, sprite_frames,
                sprite_frames_alloced * sizeof(*sprite_frames));
         Z_Free(sprite_frames);

@@ -50,7 +50,7 @@ wipe_shittyColMajorXform
     int		y;
     dpixel_t*	dest;
 
-    dest = zone_malloc_ptr<dpixel_t>(PU_STATIC, width*height);
+    dest = zone_malloc<dpixel_t>(PU_STATIC, width*height);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
@@ -238,7 +238,7 @@ wipe_StartScreen
   int	width,
   int	height )
 {
-    wipe_scr_start = zone_malloc_ptr<decltype(wipe_scr_start)>(PU_STATIC, SCREENWIDTH * SCREENHEIGHT);
+    wipe_scr_start = zone_malloc<byte>(PU_STATIC, SCREENWIDTH * SCREENHEIGHT);
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -250,7 +250,7 @@ wipe_EndScreen
   int	width,
   int	height )
 {
-    wipe_scr_end = zone_malloc_ptr<decltype(wipe_scr_end)>(PU_STATIC, SCREENWIDTH * SCREENHEIGHT);
+    wipe_scr_end = zone_malloc<byte>(PU_STATIC, SCREENWIDTH * SCREENHEIGHT);
     I_ReadScreen(wipe_scr_end);
     V_DrawBlock(x, y, width, height, wipe_scr_start); // restore start scr.
     return 0;

@@ -2504,7 +2504,7 @@ static void IncreaseDemoBuffer(void)
     // Generate a new buffer twice the size
     new_length = current_length * 2;
     
-    new_demobuffer = zone_malloc_ptr<decltype(new_demobuffer)>(PU_STATIC, new_length);
+    new_demobuffer = zone_malloc<byte>(PU_STATIC, new_length);
     new_demop = new_demobuffer + (demo_p - demobuffer);
 
     // Copy over the old data
