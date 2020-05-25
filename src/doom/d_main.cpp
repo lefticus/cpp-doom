@@ -788,34 +788,31 @@ static const char *banners[] =
 
 static const char *GetGameName(const char *gamename)
 {
-    size_t i;
-    const char *deh_sub;
-    
-    for (i=0; i<arrlen(banners); ++i)
+    for (size_t i=0; i<arrlen(banners); ++i)
     {
         // Has the banner been replaced?
 
-        deh_sub = DEH_String(banners[i]);
-        
+        auto deh_sub = DEH_String(banners[i]);
+
         if (deh_sub != banners[i])
         {
-            int version;
-
             // Has been replaced.
             // We need to expand via printf to include the Doom version number
             // We also need to cut off spaces to get the basic name
 
+            // Trim leading spaces
+            while (deh_sub[0] != '\0' && isspace(deh_sub[0]))
+            {
+               deh_sub++;
+            }
+
             const auto newgamename_size = strlen(deh_sub) + 10;
             auto *newgamename = zone_malloc<char>(PU_STATIC, newgamename_size);
-            version = G_VanillaVersionCode();
+            auto version = G_VanillaVersionCode();
             M_snprintf(newgamename, newgamename_size, deh_sub,
                        version / 100, version % 100);
 
-            while (newgamename[0] != '\0' && isspace(newgamename[0]))
-            {
-                memmove(newgamename, newgamename + 1, newgamename_size - 1);
-            }
-
+            // Trim trailing spaces
             while (newgamename[0] != '\0' && isspace(newgamename[strlen(newgamename)-1]))
             {
                 newgamename[strlen(newgamename) - 1] = '\0';
