@@ -272,7 +272,8 @@ void R_GenerateComposite (int texnum)
 	
     texture = textures[texnum];
 
-    block = zone_malloc<byte>(PU_STATIC, texturecompositesize[texnum],
+    // [crispy] initialize composite background to black (index 0)
+    block = zone_calloc<byte>(PU_STATIC, texturecompositesize[texnum],
                               &texturecomposite[texnum]);
 
     collump = texturecolumnlump[texnum];
@@ -283,9 +284,6 @@ void R_GenerateComposite (int texnum)
 		
     // killough 4/9/98: marks to identify transparent regions in merged textures
     marks = static_cast<decltype(marks)>(calloc(texture->width, texture->height));
-
-    // [crispy] initialize composite background to black (index 0)
-    memset(block, 0, texturecompositesize[texnum]);
 
     for (i=0 , patch = texture->patches;
 	 i<texture->patchcount;
@@ -417,10 +415,8 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = zone_malloc<byte>(PU_STATIC, texture->width, &patchcount);
-    postcount = zone_malloc<byte>(PU_STATIC, texture->width, &postcount);
-    memset (patchcount, 0, texture->width);
-    memset (postcount, 0, texture->width);
+    patchcount = zone_calloc<byte>(PU_STATIC, texture->width, &patchcount);
+    postcount = zone_calloc<byte>(PU_STATIC, texture->width, &postcount);
     patch = texture->patches;
 
     for (i=0 , patch = texture->patches;
@@ -593,9 +589,7 @@ static void GenerateTextureHashTable(void)
     int i;
     int key;
 
-    textures_hashtable = zone_malloc<texture_t*>(PU_STATIC, numtextures);
-
-    memset(textures_hashtable, 0, sizeof(texture_t *) * numtextures);
+    textures_hashtable = zone_calloc<texture_t*>(PU_STATIC, numtextures);
 
     // Add all textures to hash table
 
@@ -1380,8 +1374,7 @@ void R_PrecacheLevel (void)
 	return;
     
     // Precache flats.
-    flatpresent = zone_malloc<char>(PU_STATIC, numflats);
-    memset (flatpresent,0,numflats);	
+    flatpresent = zone_calloc<char>(PU_STATIC, numflats);
 
     for (i=0 ; i<numsectors ; i++)
     {
@@ -1404,9 +1397,8 @@ void R_PrecacheLevel (void)
     Z_Free(flatpresent);
     
     // Precache textures.
-    texturepresent = zone_malloc<char>(PU_STATIC, numtextures);
-    memset (texturepresent,0, numtextures);
-	
+    texturepresent = zone_calloc<char>(PU_STATIC, numtextures);
+
     for (i=0 ; i<numsides ; i++)
     {
 	texturepresent[sides[i].toptexture] = 1;
@@ -1444,9 +1436,8 @@ void R_PrecacheLevel (void)
     Z_Free(texturepresent);
     
     // Precache sprites.
-    spritepresent = zone_malloc<char>(PU_STATIC, numsprites);
-    memset (spritepresent,0, numsprites);
-	
+    spritepresent = zone_calloc<char>(PU_STATIC, numsprites);
+
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
 	if (th->function == P_MobjThinker)

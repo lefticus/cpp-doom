@@ -516,8 +516,7 @@ void P_LoadLineDefs_Hexen (int lump)
     int warn; // [crispy] warn about unknown linedef types
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
-    lines = zone_malloc<line_t>(PU_LEVEL, numlines);
-    memset(lines, 0, numlines * sizeof(line_t));
+    lines = zone_calloc<line_t>(PU_LEVEL, numlines);
     auto *data = cache_lump_num<byte *>(lump, PU_STATIC);
 
     mld = (maplinedef_hexen_t *) data;

@@ -184,9 +184,7 @@ void P_CreateBlockMap(void)
 
   // [crispy] copied over from P_LoadBlockMap()
   {
-    blocklinks = zone_malloc<mobj_t*>(PU_LEVEL, bmapwidth * bmapheight);
-    int count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-    memset(blocklinks, 0, count);
+    blocklinks = zone_calloc<mobj_t*>(PU_LEVEL, bmapwidth * bmapheight);
     blockmap = blockmaplump+4;
   }
 
