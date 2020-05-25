@@ -742,7 +742,7 @@ void R_InitTranslationTables (void)
 {
     int		i;
 	
-    translationtables = zone_malloc_ptr<decltype(translationtables)>(PU_STATIC, 256*3);
+    translationtables = zone_malloc<unsigned char>(PU_STATIC, 256*3);
     
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)
