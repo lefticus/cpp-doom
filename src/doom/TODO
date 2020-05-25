@@ -6,8 +6,8 @@ malloc  all gone from src/doom grep malloc * | grep -v zone_malloc
 
  and all variants of free
 memcpy
-memset
-mommove
+memset ( move to zone_calloc where possible, also add a create_struct version )
+mommove gone from src/doom
 any c-style cast" "-Wold-style-cast" in `/githug/cpp-doom/CMakeLists.txt 
 
 remove dynamic_Cast from p_extsaveg.cpp
