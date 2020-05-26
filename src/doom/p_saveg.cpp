@@ -1398,7 +1398,7 @@ static void saveg_write_glow_t(glow_t *str)
 
 void P_WriteSaveGameHeader(char *description)
 {
-    char name[VERSIONSIZE]; 
+    char name[VERSIONSIZE] = { 0 }; 
     int i; 
 	
     for (i=0; description[i] != '\0'; ++i)
@@ -1406,7 +1406,6 @@ void P_WriteSaveGameHeader(char *description)
     for (; i<SAVESTRINGSIZE; ++i)
         saveg_write8(0);
 
-    memset(name, 0, sizeof(name));
     M_snprintf(name, sizeof(name), "version %i", G_VanillaVersionCode());
 
     for (i=0; i<VERSIONSIZE; ++i)
@@ -1432,7 +1431,7 @@ boolean P_ReadSaveGameHeader(void)
 {
     int	 i; 
     byte a, b, c; 
-    char vcheck[VERSIONSIZE]; 
+    char vcheck[VERSIONSIZE] = { 0 };
     char read_vcheck[VERSIONSIZE];
 	 
     // skip the description field 
@@ -1443,7 +1442,6 @@ boolean P_ReadSaveGameHeader(void)
     for (i=0; i<VERSIONSIZE; ++i)
         read_vcheck[i] = saveg_read8();
 
-    memset(vcheck, 0, sizeof(vcheck));
     M_snprintf(vcheck, sizeof(vcheck), "version %i", G_VanillaVersionCode());
     if (strcmp(read_vcheck, vcheck) != 0)
 	return false;				// bad version 
