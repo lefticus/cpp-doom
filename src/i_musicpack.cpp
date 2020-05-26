@@ -531,12 +531,11 @@ static void ParseOggIdHeader(file_metadata_t *metadata, FILE *fs)
 
 static void ParseOggFile(file_metadata_t *metadata, FILE *fs)
 {
-    byte buf[7];
+    byte buf[7] = { 0 };
     unsigned int offset;
 
     // Scan through the start of the file looking for headers. They
     // begin '[byte]vorbis' where the byte value indicates header type.
-    memset(buf, 0, sizeof(buf));
 
     for (offset = 0; offset < 100 * 1024; ++offset)
     {

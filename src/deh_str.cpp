@@ -110,8 +110,7 @@ static void InitHashTable(void)
     
     hash_table_entries = 0;
     hash_table_length = 16;
-    hash_table = zone_malloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+    hash_table = zone_calloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
 }
 
 static void DEH_AddToHashtable(deh_substitution_t *sub);
@@ -130,8 +129,7 @@ static void IncreaseHashtable(void)
     // double the size 
 
     hash_table_length *= 2;
-    hash_table = zone_malloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
-    memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+    hash_table = zone_calloc<deh_substitution_t*>(PU_STATIC, hash_table_length);
 
     // go through the old table and insert all the old entries
 

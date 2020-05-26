@@ -225,9 +225,7 @@ void I_FadeToPaletteHR(const byte *palette)
 
 void I_BlackPaletteHR(void)
 {
-    byte blackpal[16 * 3];
-
-    memset(blackpal, 0, sizeof(blackpal));
+    byte blackpal[16 * 3] = { 0 };
 
     I_SetPaletteHR(blackpal);
 }

@@ -59,8 +59,7 @@ static void NET_SDL_InitAddrTable(void)
 {
     addr_table_size = 16;
 
-    addr_table = zone_malloc<addrpair_t*>(PU_STATIC, addr_table_size);
-    memset(addr_table, 0, sizeof(addrpair_t *) * addr_table_size);
+    addr_table = zone_calloc<addrpair_t*>(PU_STATIC, addr_table_size);
 }
 
 static boolean AddressesEqual(IPaddress *a, IPaddress *b)
@@ -113,8 +112,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
         // the existing table in.  replace the old table.
 
         new_addr_table_size = addr_table_size * 2;
-        new_addr_table = zone_malloc<addrpair_t*>(PU_STATIC, new_addr_table_size);
-        memset(new_addr_table, 0, sizeof(addrpair_t *) * new_addr_table_size);
+        new_addr_table = zone_calloc<addrpair_t*>(PU_STATIC, new_addr_table_size);
         memcpy(new_addr_table, addr_table, 
                sizeof(addrpair_t *) * addr_table_size);
         Z_Free(addr_table);

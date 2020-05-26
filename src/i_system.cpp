@@ -272,7 +272,7 @@ static boolean already_quitting = false;
 
 void I_Error (const char *error, ...)
 {
-    char msgbuf[512];
+    char msgbuf[512] = { 0 };
     va_list argptr;
     atexit_listentry_t *entry;
     boolean exit_gui_popup;
@@ -297,7 +297,6 @@ void I_Error (const char *error, ...)
 
     // Write a copy of the message into buffer.
     va_start(argptr, error);
-    memset(msgbuf, 0, sizeof(msgbuf));
     M_vsnprintf(msgbuf, sizeof(msgbuf), error, argptr);
     va_end(argptr);
 
