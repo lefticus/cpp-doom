@@ -18,7 +18,7 @@
 //
 
 #include <stdio.h>
-#include <stdlib.h> // [crispy] calloc()
+#include <memory>
 
 #include "deh_main.hpp"
 #include "i_swap.hpp"
@@ -267,8 +267,6 @@ void R_GenerateComposite (int texnum)
     column_t*		patchcol;
     short*		collump;
     unsigned*		colofs; // killough 4/9/98: make 32-bit
-    byte*		marks; // killough 4/9/98: transparency marks
-    byte*		source; // killough 4/9/98: temporary column
 	
     texture = textures[texnum];
 
@@ -283,8 +281,8 @@ void R_GenerateComposite (int texnum)
     patch = texture->patches;
 		
     // killough 4/9/98: marks to identify transparent regions in merged textures
-    marks = static_cast<decltype(marks)>(calloc(texture->width, texture->height));
-
+    auto marks = new byte[texture->width * texture->height] { 0 };
+    
     for (i=0 , patch = texture->patches;
 	 i<texture->patchcount;
 	 i++, patch++)
@@ -326,7 +324,8 @@ void R_GenerateComposite (int texnum)
     // killough 4/9/98: Next, convert multipatched columns into true columns,
     // to fix Medusa bug while still allowing for transparent regions.
 
-    source = static_cast<decltype(source)>(I_Realloc(NULL, texture->height)); // temporary column
+    auto source = std::make_unique<byte[]>(texture->height); // temporary column
+    
     for (i = 0; i < texture->width; i++)
     {
 	if (collump[i] == -1) // process only multipatched columns
@@ -336,7 +335,7 @@ void R_GenerateComposite (int texnum)
 	    int j = 0;
 
 	    // save column in temporary so we can shuffle it around
-	    memcpy(source, (byte *) col + 3, texture->height);
+	    memcpy(source.get(), (byte *) col + 3, texture->height);
 
 	    for ( ; ; ) // reconstruct the column by scanning transparency marks
 	    {
@@ -362,14 +361,13 @@ void R_GenerateComposite (int texnum)
 		col->length = len; // killough 12/98: intentionally truncate length
 
 		// copy opaque cells from the temporary back into the column
-		memcpy((byte *) col + 3, source + col->topdelta, len);
+		memcpy((byte *) col + 3, source.get() + col->topdelta, len);
 		col = (column_t *)((byte *) col + len + 4); // next post
 	    }
 	}
     }
 
-    free(source); // free temporary column
-    free(marks); // free transparency marks
+    delete [] marks; // free transparency marks
 
     // Now that the texture has been built in column cache,
     //  it is purgable from zone memory.
