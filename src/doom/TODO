@@ -5,6 +5,7 @@ Z_Malloc all gone
 malloc  all gone from src/doom grep malloc * | grep -v zone_malloc
 
  and all variants of free
+memcmp also suspicous
 memcpy
 memset ( move to zone_calloc where possible, also add a create_struct version )
 mommove gone from src/doom

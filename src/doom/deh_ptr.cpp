@@ -29,11 +29,9 @@ actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
 
 static int CodePointerIndex(actionf_t *ptr)
 {
-    int i;
-
-    for (i=0; i<NUMSTATES; ++i)
+    for (int i=0; i<NUMSTATES; ++i)
     {
-        if (!memcmp(&codeptrs[i], ptr, sizeof(actionf_t)))
+        if (codeptrs[i] != *ptr)
         {
             return i;
         }
