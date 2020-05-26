@@ -1086,8 +1086,6 @@ void M_QuickSaveResponse(int key)
 
 void M_QuickSave(void)
 {
-    char *savegamestring;
-
     if (!usergame)
     {
 	S_StartSound(NULL,sfx_oof);
@@ -1106,13 +1104,13 @@ void M_QuickSave(void)
 	return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[CR_GOLD],
-                                  savegamestrings[quickSaveSlot],
-                                  crstr[CR_NONE],
-                                  NULL);
+    auto savegamestring =
+       std::string( crstr[CR_GOLD] ) +
+       savegamestrings[quickSaveSlot] +
+       crstr[CR_NONE];
+
     DEH_snprintf(tempstring, sizeof(tempstring),
-                 QSPROMPT, savegamestring);
-    free(savegamestring);
+                 QSPROMPT, savegamestring.c_str());
     M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
 
@@ -1133,8 +1131,6 @@ void M_QuickLoadResponse(int key)
 
 void M_QuickLoad(void)
 {
-    char *savegamestring;
-
     // [crispy] allow quickloading game while multiplayer demo playback
     if (netgame && !demoplayback)
     {
@@ -1152,13 +1148,13 @@ void M_QuickLoad(void)
 	return;
     }
     // [crispy] print savegame name in golden letters
-    savegamestring = M_StringJoin(crstr[CR_GOLD],
-                                  savegamestrings[quickSaveSlot],
-                                  crstr[CR_NONE],
-                                  NULL);
+    auto savegamestring =
+       std::string( crstr[CR_GOLD] ) +
+       savegamestrings[quickSaveSlot] +
+       crstr[CR_NONE];
+
     DEH_snprintf(tempstring, sizeof(tempstring),
-                 QLPROMPT, savegamestring);
-    free(savegamestring);
+                 QLPROMPT, savegamestring.c_str());
     M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
 
